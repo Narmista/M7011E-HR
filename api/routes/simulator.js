@@ -7,8 +7,9 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 }
 
 router.get('/', (req, res, next) => {
+	var x = gaussianRandom(10,1);
 	res.status(200).json({
-		gaussianRandom(10,1);
+		message: x
 	});
 
 });
