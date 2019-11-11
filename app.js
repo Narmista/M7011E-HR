@@ -2,12 +2,14 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 
-const simulatorRoute = require('./api/routes/simulator');
+const weatherRoute = require('./api/routes/weather');
+const electricityConsumptionRoute = require('./api/routes/electricityConsumption');
 
 //Logging
 app.use(morgan('dev'));
 
-app.use('/simulator', simulatorRoute);
+app.use('/weather', weatherRoute);
+app.use('/electricityConsumption', electricityConsumptionRoute);
 
 
 module.exports = app;
