@@ -1,0 +1,3 @@
+Vart ska vi sätta upp databasen?
+Hur ska tiden fungera?
+Automated test?
