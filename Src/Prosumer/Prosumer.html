@@ -8,13 +8,9 @@
   <body>
 	<script>
 		$(document).ready(function() {
-			alert("Yes");
-			$.ajax({
-				url: '52.91.53.73:3000/weather',
-				data:"",
-				success: function(result) {
-					alert(result);
-				}
+			alert("Yess");
+			$.getJSON("https://52.91.53.73:3000/weather?callback=?",function(json){
+  				console.log(json);
 			});
 		});
 	</script>
