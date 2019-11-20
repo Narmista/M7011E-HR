@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+const Consumption = require('../models/electricityConsumption');
 
 function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5fb7b1fc30609e983b0207ae136707
   var u = Math.random();
@@ -8,9 +11,17 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 
 router.get('/', (req, res, next) => {
 	var x = gaussianRandom(10,1);
+	const consumption = new Consumption({
+		id: 10,
+		consumption: x
+	})
+	consumption.save().then(result => {
+		console.log(result);
+	});
 	res.status(200).json({
 		message: 'Electricity Consumption = ' + x
 	});
+
 
 });
 
