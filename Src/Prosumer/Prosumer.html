@@ -6,19 +6,28 @@
   </head>
 
   <body>
+
 	<script>
 		$(document).ready(function() {
-			alert("Yess");
-			$.getJSON("http://52.91.53.73:3000/weather?callback=?",function(json){
-  				console.log(json);
+			$.getJSON("http://52.91.53.73:3000/electricityConsumption",function(json){
+				setConsumption(json.elecConsumption);				
+			});
+			$.getJSON("http://52.91.53.73:3000/weather",function(json){
+				setWind(json.currentWeather);				
 			});
 		});
+		function setConsumption(elecConsumption){
+			document.getElementById("consumption").innerHTML = elecConsumption;
+		}
+		function setWind(wind){
+			document.getElementById("wind").innerHTML = wind;
+		}
 	</script>
 
 	<h1>Green Lean Electrics</h1>
-	<p>Current wind: </p>
+	<p>Current wind: <p id="wind"></p></p>
 	<p>Current production: </p>
-	<p>Current consumption: </p>
+	<p>Current consumption: <p id="consumption"></p> </p>
 	<p>Net production: </p>
 	<p>Buffer: </p>
 	<p>Current electricity price: </p>
