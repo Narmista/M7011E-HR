@@ -10,7 +10,7 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 }
 
 router.get('/', (req, res, next) => {
-	var elecConsumption = gaussianRandom(10,1);
+	var elecConsumption = gaussianRandom(8,1);
 	const consumption = new Consumption({
 		id: 10,
 		consumption: elecConsumption

@@ -7,8 +7,14 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 }
 
 router.get('/', (req, res, next) => {
-	var dailyWeather = gaussianRandom(10,1);
-	var currentWeather = gaussianRandom(dailyWeather,1);
+	var dailyWeather = gaussianRandom(2,4);
+	if(dailyWeather<0){
+		dailyWeather = dailyWeather*-1;
+	}
+	var currentWeather = gaussianRandom(dailyWeather,0.6);
+	if(currentWeather<0){
+		currentWeather = currentWeather*-1;
+	}
 	res.send({currentWeather});
 
 });
