@@ -9,3 +9,13 @@ function getWeather(){
 
 }
 
+	<script>
+		$(document).ready(function() {
+			var myJSON = "hej";
+			$.getJSON("http://52.91.53.73:3000/electricityConsumption",function(json){
+				myJSON = "hejdå";
+  					
+			});
+			alert(myJSON);
+		});
+	</script>

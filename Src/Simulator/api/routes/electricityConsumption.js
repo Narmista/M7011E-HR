@@ -10,17 +10,16 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 }
 
 router.get('/', (req, res, next) => {
-	var x = gaussianRandom(10,1);
+	var elecConsumption = gaussianRandom(10,1);
 	const consumption = new Consumption({
 		id: 10,
-		consumption: x
+		consumption: elecConsumption
 	})
 	consumption.save().then(result => {
 		console.log(result);
 	});
-	res.status(200).json({
-		message: 'Electricity Consumption = ' + x
-	});
+
+	res.json({elecConsumption});
 
 
 });
