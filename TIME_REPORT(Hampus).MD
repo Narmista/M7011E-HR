@@ -9,3 +9,4 @@
 | 2019-11-19  | 2	    | Set up a basic data base and tried to connect prosumer and api  		|
 | 2019-11-20  | 1	    | Connected prosumer and api  		|
 | 2019-11-25  | 3	    | Sent value from api to prosumer  		|
+| 2019-11-26  | 5	    | Added login and signup for prosumers in api and started adding it to the website  |

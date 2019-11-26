@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+  <head>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
+    </script>
+  </head>
+  <body>
+	<script>
+		function login(uname, pwd) {
+			$.ajax({
+                type: 'post',
+                url: 'http://18.234.65.48:3000/user/login',
+                data: {username: uname, password: pwd},
+                dataType: 'text',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                	window.location.replace('/Prosumer.html')
+                }
+            });
+		}
+
+		function loginValues(){
+			login(document.getElementById("username").value, document.getElementById("password").value);
+		}
+	</script>
+
+	<h1>Login</h1>
+
+	<div class="container">
+    <label for="username"><b>Username</b></label>
+    <input type="text" id="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" id="password" required>
+
+    <button type="submit" onclick="loginValues()">Login</button>
+  	</div>
+	
+  </body>
+</html>
