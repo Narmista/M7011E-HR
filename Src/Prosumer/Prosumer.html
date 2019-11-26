@@ -35,16 +35,13 @@
 
             $.ajax({
                 type: 'post',
-                url: 'http://18.234.65.48:3000/user/signup',
-                data: {username: "testt", password: "hejsan"},
+                url: 'http://18.234.65.48:3000/user/login',
+                data: {username: "k", password: "k"},
                 dataType: 'text',
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                  	setWind(json.currentWeather);	
-					setProduction(json.currentWeather);
-					setNetProduction(json.currentWeather);
                 }
             });
 
