@@ -9,16 +9,56 @@
 
 	<script>
 		$(document).ready(function() {
-			$.post("http://18.234.65.48:3000/signup", {username: "test", password: "hejsan"});
+			$.ajax({
+                type: 'get',
+                url: 'http://18.234.65.48:3000/electricityConsumption',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                   setConsumption(json.elecConsumption);
+                }
+            });
+
+            $.ajax({
+                type: 'get',
+                url: 'http://18.234.65.48:3000/weather',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                  	setWind(json.currentWeather);	
+					setProduction(json.currentWeather);
+					setNetProduction(json.currentWeather);
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: 'http://18.234.65.48:3000/user/signup',
+                data: {username: "testt", password: "hejsan"},
+                dataType: 'text',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                  	setWind(json.currentWeather);	
+					setProduction(json.currentWeather);
+					setNetProduction(json.currentWeather);
+                }
+            });
+
+			//$.post("http://18.234.65.48:3000/user/signup", {username: "test", password: "hejsan"});
 
 
-			$.getJSON("http://18.234.65.48:3000/electricityConsumption",function(json){	setConsumption(json.elecConsumption);	
-			});
-			$.getJSON("http://18.234.65.48:3000/weather",function(json){
-				setWind(json.currentWeather);	
-				setProduction(json.currentWeather);
-				setNetProduction(json.currentWeather);		
-			});
+			//$.getJSON("http://18.234.65.48:3000/electricityConsumption", function(json){	
+			//	setConsumption(json.elecConsumption);	
+			//});
+			//$.getJSON("http://18.234.65.48:3000/weather", function(json){
+			//	setWind(json.currentWeather);	
+			//	setProduction(json.currentWeather);
+			//	setNetProduction(json.currentWeather);		
+			//});
 		});
 		function setConsumption(elecConsumption){
 			document.getElementById("consumption").innerHTML = elecConsumption*10;

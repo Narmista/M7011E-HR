@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-
+const parser = require('body-parser');
 
 const weatherRoute = require('./api/routes/weather');
 const electricityConsumptionRoute = require('./api/routes/electricityConsumption');
@@ -20,6 +20,8 @@ app.use(function(req, res, next) {
 
 //Logging 
 app.use(morgan('dev'));
+app.use(parser.urlencoded({extended: false}));
+app.use(parser.json());
 
 app.use('/weather', weatherRoute);
 app.use('/electricityConsumption', electricityConsumptionRoute);
