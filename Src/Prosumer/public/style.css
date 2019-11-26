@@ -1,0 +1,3 @@
+#windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p{
+	display: inline;
+}
