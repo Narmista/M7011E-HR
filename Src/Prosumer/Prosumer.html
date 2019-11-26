@@ -9,8 +9,10 @@
 
 	<script>
 		$(document).ready(function() {
-			$.getJSON("http://18.234.65.48:3000/electricityConsumption",function(json){
-				setConsumption(json.elecConsumption);				
+			$.post("http://18.234.65.48:3000/signup", {username: "test", password: "hejsan"});
+
+
+			$.getJSON("http://18.234.65.48:3000/electricityConsumption",function(json){	setConsumption(json.elecConsumption);	
 			});
 			$.getJSON("http://18.234.65.48:3000/weather",function(json){
 				setWind(json.currentWeather);	
