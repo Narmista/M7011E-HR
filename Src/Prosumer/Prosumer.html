@@ -8,21 +8,19 @@
   <body>
 
 	<script>
-
 		$(document).ready(function() {
-			
-			$.getJSON("http://52.91.53.73:3000/electricityConsumption",function(json){
+			$.getJSON("http://18.234.65.48:3000/electricityConsumption",function(json){
 				setConsumption(json.elecConsumption);				
 			});
-			$.getJSON("http://52.91.53.73:3000/weather",function(json){
+			$.getJSON("http://18.234.65.48:3000/weather",function(json){
 				setWind(json.currentWeather);	
-				setProduction(json.currentWeather);		
+				setProduction(json.currentWeather);
+				setNetProduction(json.currentWeather);		
 			});
-			setNetProduction();
 		});
 		function setConsumption(elecConsumption){
 			document.getElementById("consumption").innerHTML = elecConsumption*10;
-			consumption = elecConsumption*10;
+			document.getElementById("netProduction").innerHTML = elecConsumption*10;
 		}
 		function setWind(wind){
 			document.getElementById("wind").innerHTML = wind;
@@ -30,8 +28,12 @@
 		function setProduction(wind){
 			document.getElementById("production").innerHTML = wind*10;
 		}
-		function setNetProduction(){
-			document.getElementById("netProduction").innerHTML = document.getElementById("production").value - document.getElementById("consumption").value;
+		function setNetProduction(wind){
+			var y = wind*10 - Number(document.getElementById("netProduction").innerHTML);
+			document.getElementById("netProduction").innerHTML = y;
+		}
+		function setPrice(wind){
+			
 		}
 	</script>
 
@@ -41,6 +43,6 @@
 	<p>Current consumption: <p id="consumption"></p> kWh</p>
 	<p>Net production: <p id="netProduction"></p> kWh</p>
 	<p>Buffer: </p>
-	<p>Current electricity price: </p>
+	<p>Current electricity price: <p id="netProduction"></p> kr</p>
   </body>
 </html>
