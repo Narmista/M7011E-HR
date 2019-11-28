@@ -9,9 +9,14 @@
 
 	<script>
 		$(document).ready(function() {
+			var test = window.location.hash.split('?')[1]
+
 			$.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/electricityConsumption',
+                headers: {
+                	'Authorization': 'Bearer' + test
+                },
                 error: function (data) {
                     console.debug(data);
                 },
@@ -32,6 +37,8 @@
 					setNetProduction(json.currentWeather);
                 }
             });
+
+       	
 
       
 

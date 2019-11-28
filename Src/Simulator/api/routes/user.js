@@ -73,9 +73,9 @@ router.post("/login", (req, res, next) => {
                 expiresIn: "1h"
             }
           );
-          return res.status(200).json({
-            message: "Auth successful",
-            token: token
+         // res.json({token});
+          return res.json({
+            token
           });
         }
         res.status(401).json({

@@ -16,7 +16,9 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('/static/prosumer.html');
+                  //Authorization: Bearer json.token
+                  //alert(Authorization);
+                	window.location.replace('/static/prosumer.html?'+json.token);
                 }
             });
 		}
