@@ -11,7 +11,7 @@
 		$(document).ready(function() {
 			$.ajax({
                 type: 'get',
-                url: 'http://18.234.65.48:3000/electricityConsumption',
+                url: 'http://localhost:3000/electricityConsumption',
                 error: function (data) {
                     console.debug(data);
                 },
@@ -22,7 +22,7 @@
 
             $.ajax({
                 type: 'get',
-                url: 'http://18.234.65.48:3000/weather',
+                url: 'http://localhost:3000/weather',
                 error: function (data) {
                     console.debug(data);
                 },
@@ -33,17 +33,7 @@
                 }
             });
 
-            $.ajax({
-                type: 'post',
-                url: 'http://18.234.65.48:3000/user/login',
-                data: {username: "k", password: "k"},
-                dataType: 'text',
-                error: function (data) {
-                    console.debug(data);
-                },
-                success: function (json) {
-                }
-            });
+      
 
 			//$.post("http://18.234.65.48:3000/user/signup", {username: "test", password: "hejsan"});
 

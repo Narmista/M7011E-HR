@@ -6,44 +6,40 @@
   </head>
   <body>
 	<script>
-		function login(uname, pwd) {
+		function signup(uname, pwd, nme) {
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/login',
-                data: {username: uname, password: pwd},
+                url: 'http://localhost:3000/user/signup',
+                data: {username: uname, password: pwd, name: nme},
                 dataType: 'text',
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('/static/prosumer.html');
+                	window.location.replace('http://localhost:8000');
                 }
             });
 		}
 
-		function loginValues(){
-			login(document.getElementById("username").value, document.getElementById("password").value);
+		function register(){
+			signup(document.getElementById("username").value, document.getElementById("password").value, document.getElementById("name").value);
 		}
-    function signUp(){
-      window.location.replace('/static/SignUp.html');
-    }
 	</script>
 
-	<h1>Login</h1>
+	<h1>Sign Up</h1>
 
 	<div class="container">
+    <label for="name"><b>Name</b></label>
+    <input type="text" id="name" required>
+
     <label for="username"><b>Username</b></label>
     <input type="text" id="username" required>
 
     <label for="password"><b>Password</b></label>
     <input type="password" id="password" required>
 
-    <button type="submit" onclick="loginValues()">Login</button>
-
-    <button type="submit" onclick="signUp()">Register</button>
-  </div>
-
-
+    <button type="submit" onclick="register()">Register</button>
+  	</div>
 	
   </body>
 </html>
