@@ -11,14 +11,12 @@
                 type: 'post',
                 url: 'http://localhost:3000/user/login',
                 data: {username: uname, password: pwd},
-                dataType: 'text',
+                dataType: 'json',
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                  //Authorization: Bearer json.token
-                  //alert(Authorization);
-                	window.location.replace('/static/prosumer.html?'+json.token);
+                  window.location.replace('/static/prosumer.html?'+json.token);
                 }
             });
 		}
