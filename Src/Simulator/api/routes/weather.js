@@ -18,8 +18,8 @@ router.get('/dailyWeather', (req, res, next) => {
 	dailyWind.find({ date: currentDate }, {windSpeed: 1}).exec().then(wind => {
     	if (wind.length >= 1){
     		var speed = wind[0]['windSpeed'];
-    		console.log("hejsan " + speed);
-    		res.json({speed});
+    		console.log("hejsan " + typeof speed);
+    		res.json({speed}); //blir undefined
     	} else{
     		dailyWeather = gaussianRandom(2,4);
 			if(dailyWeather<0){
