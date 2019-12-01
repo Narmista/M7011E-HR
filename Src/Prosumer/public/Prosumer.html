@@ -35,6 +35,7 @@
                     console.debug(data);
                 },
                 success: function (json) {
+                	alert(json.dailyWeather);
                   	$.ajax({
 		                type: 'post',
 		                url: 'http://localhost:3000/weather/currentWeather',

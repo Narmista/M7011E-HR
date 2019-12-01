@@ -12,14 +12,14 @@ function gaussianRandom(mean,sigma){ //https://gist.github.com/supereggbert/fe5f
 
 router.get('/dailyWeather', (req, res, next) => {
 	var today = new Date();
-	var currentDate = 3 +"/"+ today.getMonth()+"/"+ today.getFullYear();
+	var currentDate = 4 +"/"+ today.getMonth()+"/"+ today.getFullYear();
 	var dailyWeather;
 
 	dailyWind.find({ date: currentDate }, {windSpeed: 1}).exec().then(wind => {
     	if (wind.length >= 1){
-    		var speed = wind.windSpeed;
-    		console.log("hejsan " + wind[0]);
-    		//res.json({speed});
+    		var speed = wind[0]['windSpeed'];
+    		console.log("hejsan " + speed);
+    		res.json({speed});
     	} else{
     		dailyWeather = gaussianRandom(2,4);
 			if(dailyWeather<0){
