@@ -26,6 +26,7 @@ router.post('/signup', (req, res, next) => {
               username: req.body.username,
               password: hash,
               name: req.body.name,
+              buffer: 0,
             });
             user
               .save()
@@ -91,4 +92,35 @@ router.post("/login", (req, res, next) => {
     });
 });
  
+router.post("/updateBuffer", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  var newBuffer;
+
+  User.find({ username: name }, {buffer: 1}).exec().then(user => {
+    var currentBuffer = user[0]['buffer'];
+    newBuffer = currentBuffer + parseInt(req.body.buffer);
+    var myquery = { username: name };
+    var newvalues = { $set: {buffer: newBuffer} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+      console.log("1 document updated");
+    });
+    res.json({newBuffer});
+  });
+});
+
+router.get("/getBuffer", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }, {buffer: 1}).exec().then(user => {
+    var currentBuffer = user[0]['buffer'];
+    console.log("newbuf " + currentBuffer);
+    res.json({currentBuffer});
+  });
+});
+
 module.exports = router;

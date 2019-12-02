@@ -28,14 +28,13 @@
             $.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/weather/dailyWeather',
-              //  headers: {
-                //	'Authorization': 'Bearer ' + test
-             //   },
+                headers: {
+                	'Authorization': 'Bearer ' + test
+                },
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                	alert(json.dailyWeather);
                   	$.ajax({
 		                type: 'post',
 		                url: 'http://localhost:3000/weather/currentWeather',
@@ -55,6 +54,9 @@
 		     	   });
                 }
             });
+            
+       
+
 
 		});
 
@@ -72,7 +74,75 @@
 		function setNetProduction(wind){
 			var y = wind*10 - Number(document.getElementById("netProduction").innerHTML);
 			document.getElementById("netProduction").innerHTML = y;
+			setBuffer(y);
 		}
+		function setBuffer(production){
+			var x;
+			if(production > 0){
+				x = document.getElementById("save").value;
+				if(x.length < 1){
+					x = 0;
+				}
+				var save = production*(x/100);
+				sendBuffer(save);
+			}else{
+				x = document.getElementById("buy").value;
+				if(x.length < 1){
+					x = 0;
+				}
+				getBuffer(production, x);
+				//alert("save" + save);
+				//alert(document.getElementById("buffer").value);
+				//if(save > document.getElementById("buffer").value){
+				//	save =  document.getElementById("buffer").value;
+				//	}
+				//sendBuffer(save);
+			}
+		}
+		function getBuffer(production, perc){
+			const href = window.location.href;
+			const test = href.split('?')[1];
+			$.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/user/getBuffer',
+                dataType: 'json',
+                headers: {
+                	'Authorization': 'Bearer ' + test
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                	var buf = json.currentBuffer*(perc/100) //läs vad spara och använd buffer ska göra
+                	if(buf+production < 0){
+                		sendBuffer(-buf);   
+                	} else {
+                		sendBuffer(production);
+                	}
+                }
+            });
+
+		}
+		function sendBuffer(value){
+			const href = window.location.href;
+			const test = href.split('?')[1];
+			$.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/updateBuffer',
+                data: {buffer: value},
+		        dataType: 'json',
+                headers: {
+                	'Authorization': 'Bearer ' + test
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                	document.getElementById("buffer").innerHTML = json.newBuffer;
+                }
+            });
+		}
+
 		function setPrice(wind){
 			
 		}
@@ -83,7 +153,16 @@
 	<div id="productionDiv"><p>Current production: <p id="production"></p> kWh</p></div>
 	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
 	<div id="netProductionDiv"><p>Net production: <p id="netProduction"></p> kWh</p></div>
-	<div id="bufferDiv"><p>Buffer: </p></div>
+	<div id="bufferDiv"><p>Buffer: <p id="buffer"></p> kWh</p></div>
 	<div id="priceDiv"><p>Current electricity price: </p></div>
+
+	<div class="container">
+    <label for="save"><p>What percentage of your production would you like to save?</p></label>
+    <input type="text" id="save" required>
+	</div>
+	<div class="container">
+    <label for="buy"><p>What percentage of your buffer would you like to use?</p></label>
+    <input type="text" id="buy" required>
+	</div>
   </body>
 </html>
