@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});
 
 const User = require('../models/user');
 
@@ -105,7 +107,6 @@ router.post("/updateBuffer", (req, res, next) => {
     var myquery = { username: name };
     var newvalues = { $set: {buffer: newBuffer} };
     User.updateOne(myquery, newvalues, function(err, res) {
-      console.log("1 document updated");
     });
     res.json({newBuffer});
   });
@@ -118,9 +119,12 @@ router.get("/getBuffer", (req, res, next) => {
 
   User.find({ username: name }, {buffer: 1}).exec().then(user => {
     var currentBuffer = user[0]['buffer'];
-    console.log("newbuf " + currentBuffer);
     res.json({currentBuffer});
   });
+});
+
+router.post('/uploadImage', upload.single('avatar'), (req, res, next) => {
+  console.log(req.file);
 });
 
 module.exports = router;

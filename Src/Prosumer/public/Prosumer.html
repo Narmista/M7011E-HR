@@ -9,13 +9,20 @@
 
 	<script>
 		$(document).ready(function() {
+			main(); 
+			setInterval(function(){
+    			main(); 
+			}, 500000000); //5000 = 5s
+		});
+
+		function main(){
 			const href = window.location.href;
-			const test = href.split('?')[1];
+			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/electricityConsumption',
                 headers: {
-                	'Authorization': 'Bearer ' + test
+                	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                     console.debug(data);
@@ -29,7 +36,7 @@
                 type: 'get',
                 url: 'http://localhost:3000/weather/dailyWeather',
                 headers: {
-                	'Authorization': 'Bearer ' + test
+                	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                     console.debug(data);
@@ -41,7 +48,7 @@
 		                data: {dailyWeather: json.dailyWeather},
 		                dataType: 'json',
 		                headers: {
-		                	'Authorization': 'Bearer ' + test
+		                	'Authorization': 'Bearer ' + auth
 		                },
 		                error: function (data) {
 		                    console.debug(data);
@@ -54,11 +61,7 @@
 		     	   });
                 }
             });
-            
-       
-
-
-		});
+		}
 
 
 		function setConsumption(elecConsumption){
@@ -82,69 +85,99 @@
 				x = document.getElementById("save").value;
 				if(x.length < 1){
 					x = 0;
+				}else if(x > 100){
+					x = 100;
+				}else if(x < 0){
+					x = 0;
 				}
 				var save = production*(x/100);
-				sendBuffer(save);
+				sendBuffer(save, production);
 			}else{
 				x = document.getElementById("buy").value;
 				if(x.length < 1){
 					x = 0;
+				}else if(x > 100){
+					x = 100;
+				}else if(x < 0){
+					x = 0;
 				}
-				getBuffer(production, x);
-				//alert("save" + save);
-				//alert(document.getElementById("buffer").value);
-				//if(save > document.getElementById("buffer").value){
-				//	save =  document.getElementById("buffer").value;
-				//	}
-				//sendBuffer(save);
+				var save = production*(x/100);
+				getBuffer(save, production);
 			}
 		}
-		function getBuffer(production, perc){
+		function getBuffer(save, production){
 			const href = window.location.href;
-			const test = href.split('?')[1];
+			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/user/getBuffer',
                 dataType: 'json',
                 headers: {
-                	'Authorization': 'Bearer ' + test
+                	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                	var buf = json.currentBuffer*(perc/100) //läs vad spara och använd buffer ska göra
-                	if(buf+production < 0){
-                		sendBuffer(-buf);   
+                	if(save + json.currentBuffer < 0){
+                		sendBuffer(-json.currentBuffer, production);   
                 	} else {
-                		sendBuffer(production);
+                		sendBuffer(save, production);
                 	}
                 }
             });
-
 		}
-		function sendBuffer(value){
+		function sendBuffer(value, production){
 			const href = window.location.href;
-			const test = href.split('?')[1];
+			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'post',
                 url: 'http://localhost:3000/user/updateBuffer',
                 data: {buffer: value},
 		        dataType: 'json',
                 headers: {
-                	'Authorization': 'Bearer ' + test
+                	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
                 	document.getElementById("buffer").innerHTML = json.newBuffer;
+                	setPrice(value, production);
                 }
             });
 		}
-
-		function setPrice(wind){
-			
+		function setPrice(buffer, production){
+			document.getElementById("price").innerHTML = (production - buffer)*1;
+		}
+		function logout(){
+			window.location.replace('http://localhost:8000');
+		}
+		function upload(){
+			const href = window.location.href;
+			const auth = href.split('?')[1];
+			var file_data = $('#file').prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('avatar', file_data);
+			$.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/uploadImage',
+                headers: {
+                	'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                data: form_data,
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                  // setConsumption(json.elecConsumption);
+                }
+            });
 		}
 	</script>
 
@@ -154,15 +187,25 @@
 	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
 	<div id="netProductionDiv"><p>Net production: <p id="netProduction"></p> kWh</p></div>
 	<div id="bufferDiv"><p>Buffer: <p id="buffer"></p> kWh</p></div>
-	<div id="priceDiv"><p>Current electricity price: </p></div>
+	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr</p></div>
 
 	<div class="container">
-    <label for="save"><p>What percentage of your production would you like to save?</p></label>
-    <input type="text" id="save" required>
+    <label for="save"><p>What percentage of your overproduction would you like to save in the buffer?</p></label>
+    <input type="text" placeholder="0" id="save" required>
 	</div>
 	<div class="container">
-    <label for="buy"><p>What percentage of your buffer would you like to use?</p></label>
-    <input type="text" id="buy" required>
+    <label for="buy"><p>What percentage of your underproduction would you like to take from the buffer?</p></label>
+    <input type="text" placeholder="0" id="buy" required>
 	</div>
+
+	<div class="container">
+    <button type="submit" onclick="logout()">Logout</button>
+	</div>
+
+	<div class="container">
+	<input type="file" id="file" name="file" multiple />
+    <button type="submit" onclick="upload()">Upload</button>
+	</div>
+
   </body>
 </html>
