@@ -12,7 +12,7 @@
 			main(); 
 			setInterval(function(){
     			main(); 
-			}, 500000000); //5000 = 5s
+			}, 1000); //5000 = 5s
 		});
 
 		function main(){
@@ -29,6 +29,24 @@
                 },
                 success: function (json) {
                    setConsumption(json.elecConsumption);
+                }
+            });
+
+			$.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/user/getImage',
+                headers: {
+                	'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                   //json.icon 
+      				if(typeof json.icon != "undefined"){
+                   		$("#myImg").attr('src','http://localhost:3000/' + json.icon);
+                   		$("#myImg").attr('style','');
+                	}
                 }
             });
 
@@ -65,18 +83,17 @@
 
 
 		function setConsumption(elecConsumption){
-			document.getElementById("consumption").innerHTML = elecConsumption*10;
-			document.getElementById("netProduction").innerHTML = elecConsumption*10;
+			document.getElementById("consumption").innerHTML = Math.round(elecConsumption*10);
 		}
 		function setWind(wind){
-			document.getElementById("wind").innerHTML = wind;
+			document.getElementById("wind").innerHTML = Math.round(wind*10)/10;
 		}
 		function setProduction(wind){
-			document.getElementById("production").innerHTML = wind*10;
+			document.getElementById("production").innerHTML = Math.round(wind*10);
 		}
 		function setNetProduction(wind){
-			var y = wind*10 - Number(document.getElementById("netProduction").innerHTML);
-			document.getElementById("netProduction").innerHTML = y;
+			var y = wind*10 - Number(document.getElementById("consumption").innerHTML);
+			document.getElementById("netProduction").innerHTML = Math.round(y);
 			setBuffer(y);
 		}
 		function setBuffer(production){
@@ -148,7 +165,7 @@
             });
 		}
 		function setPrice(buffer, production){
-			document.getElementById("price").innerHTML = (production - buffer)*1;
+			document.getElementById("price").innerHTML = Math.round((production - buffer)*1);
 		}
 		function logout(){
 			window.location.replace('http://localhost:8000');
@@ -182,6 +199,9 @@
 	</script>
 
 	<h1>Green Lean Electrics</h1>
+
+	<img id="myImg" height="100" width="100" style="display: none">
+
 	<div id="windDiv"> <p>Current wind:</p> <p id="wind"></p> <p>m/s</p> </div>
 	<div id="productionDiv"><p>Current production: <p id="production"></p> kWh</p></div>
 	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
@@ -198,13 +218,13 @@
     <input type="text" placeholder="0" id="buy" required>
 	</div>
 
-	<div class="container">
-    <button type="submit" onclick="logout()">Logout</button>
-	</div>
-
-	<div class="container">
+	<div class="container" id="submit">
 	<input type="file" id="file" name="file" multiple />
     <button type="submit" onclick="upload()">Upload</button>
+	</div> 
+
+	<div class="container" id="logout">
+    <button type="submit" onclick="logout()">Logout</button>
 	</div>
 
   </body>

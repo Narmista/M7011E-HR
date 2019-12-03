@@ -20,6 +20,8 @@ app.use(function(req, res, next) {
 
 //Logging 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
+//app.use('/static', express.static('uploads'));
 app.use(parser.urlencoded({extended: false}));
 app.use(parser.json());
 

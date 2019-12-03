@@ -4,7 +4,17 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'});
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({storage: storage});
 
 const User = require('../models/user');
 
@@ -124,7 +134,28 @@ router.get("/getBuffer", (req, res, next) => {
 });
 
 router.post('/uploadImage', upload.single('avatar'), (req, res, next) => {
-  console.log(req.file);
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {image: req.file.path} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+  });
 });
+
+router.get("/getImage", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }, {image: 1}).exec().then(user => {
+    var icon = user[0]['image'];
+    res.json({icon});
+  });
+});
+
 
 module.exports = router;

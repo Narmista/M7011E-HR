@@ -12,3 +12,4 @@
 | 2019-11-26  | 5	    | Added login and signup for prosumers in api and started adding it to the website  |
 | 2019-12-01  | 4	    | Fixed auth tokens and continued with prosumer  |
 | 2019-12-02  | 7	    | Worked with the prosumer and db  |
+| 2019-12-03  | 8	    | Finished prosumer (uploading image, update frequency, logout function)  |
