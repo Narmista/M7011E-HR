@@ -39,6 +39,7 @@ router.post('/signup', (req, res, next) => {
               password: hash,
               name: req.body.name,
               buffer: 0,
+              role: 1,
             });
             user
               .save()
@@ -86,8 +87,10 @@ router.post("/login", (req, res, next) => {
                 expiresIn: "1h"
             }
           );
+          var role = user[0].role;
           res.json({
-            token
+            token,
+            role
           });
           return 
         }
@@ -154,6 +157,70 @@ router.get("/getImage", (req, res, next) => {
   User.find({ username: name }, {image: 1}).exec().then(user => {
     var icon = user[0]['image'];
     res.json({icon});
+  });
+});
+
+router.post("/changeUser", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {username: req.body.username} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+
+});
+
+router.post("/changeName", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {name: req.body.name} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.post("/changePass", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      if (err) {
+        return res.status(500).json({
+        error: err
+        });
+      } else {    
+        var myquery = { username: name };
+        var newvalues = { $set: {password: hash} };
+        User.updateOne(myquery, newvalues, function(err, res) {
+        });
+       res.json({});
+    }
+    });
+  });
+});
+
+router.post("/delete", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    User.deleteOne(myquery, function(err, res) {
+    });
+    res.json({});
   });
 });
 

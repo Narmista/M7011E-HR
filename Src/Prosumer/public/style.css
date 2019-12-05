@@ -1,4 +1,5 @@
-#windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p{
+#windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p
+, #powerPlant p, #production p{
 	display: inline;
 }
 
@@ -17,7 +18,7 @@ body{
 
 #myImg {
 	float: right;
-	margin-right: 60%;
+	margin-right: 55%;
 }
 
 #submit {

@@ -16,7 +16,11 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                  window.location.replace('/static/prosumer.html?'+json.token);
+                  if(json.role == 1){
+                    window.location.replace('/static/prosumer.html?'+json.token);
+                  }else if(json.role == 0){
+                    window.location.replace('/static/manager.html?'+json.token);
+                  }
                 }
             });
 		}
