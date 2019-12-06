@@ -40,6 +40,7 @@ router.post('/signup', (req, res, next) => {
               name: req.body.name,
               buffer: 0,
               role: 1,
+              status: 0,
             });
             user
               .save()
@@ -77,6 +78,10 @@ router.post("/login", (req, res, next) => {
           });
         }
         if (result) {
+          var myquery = { username: user[0].username };
+          var newvalues = { $set: {status: 1} };
+          User.updateOne(myquery, newvalues, function(err, res) {
+          });
           const token = jwt.sign(
             {
               username: user[0].username,
@@ -219,6 +224,40 @@ router.post("/delete", (req, res, next) => {
   User.find({ username: name }).exec().then(user => {
     var myquery = { username: name };
     User.deleteOne(myquery, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.post("/statusZero", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {status: 0} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.get("/tokenExpire", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY);
+  res.json({});
+});
+
+router.get("/tokenZero", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {status: 0} };
+    User.updateOne(myquery, newvalues, function(err, res) {
     });
     res.json({});
   });

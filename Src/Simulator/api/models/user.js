@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
 	name: { type: String, required: true },
 	buffer: Number,
 	image: String,
-	role: Number
+	role: Number,
+	status: Number
 });
 
 module.exports = mongoose.model('User', userSchema);

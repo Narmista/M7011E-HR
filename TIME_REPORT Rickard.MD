@@ -15,4 +15,5 @@
 | 2019-12-01  | 5	    | Fixed auth tokens and continued with prosumer  |
 | 2019-12-02  | 7	    | Worked with the prosumer and db  |
 | 2019-12-03  | 8	    | Finished prosumer (uploading image, update frequency, logout function)  |
-| 2019-12-04  | 8	    | Started with manager (profile and power plant)  |
+| 2019-12-05  | 8	    | Started with manager (profile and power plant)  |
+| 2019-12-06  | 6	    | Added status function to users and buffer for power plant  |

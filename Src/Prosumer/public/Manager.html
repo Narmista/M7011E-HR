@@ -4,19 +4,44 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
     </script>
   </head>
-  <body>
+  <body onbeforeunload="return logout()">
 	<script>
         $(document).ready(function() {
             main(); 
             setInterval(function(){
                 main(); 
-            }, 10000); //5000 = 5s
+            }, 100000); //5000 = 5s
         });
 
         const href = window.location.href;
         const auth = href.split('?')[1];
 
         function main(){
+            $.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/user/tokenExpire',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    $.ajax({
+                        type: 'get',
+                        url: 'http://localhost:3000/user/tokenZero',
+                        headers: {
+                            'Authorization': 'Bearer ' + auth
+                        },
+                        error: function (data) {
+                            console.debug(data);
+                        },
+                        success: function (json) {
+                            alert("You have been logged in for too long, please login again!");
+                            window.location.replace('http://localhost:8000');
+                        }
+                    });
+                },
+                success: function (json) {
+                }
+            });
             $.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/user/getImage',
@@ -81,6 +106,7 @@
         }
         function setProduction(production){
             document.getElementById("production").innerHTML = production;
+            setBuffer(production);
         }
         function upload(){
             var file_data = $('#file').prop('files')[0];
@@ -216,7 +242,7 @@
             });
             setTimeout(function(){
                 startPlant(); 
-            }, 30000); //5000 = 5s
+            }, 10000); //5000 = 5s
         }  
 
         function stopPlant() {
@@ -232,8 +258,55 @@
                 },
                 success: function (json) {
                 }
-            });
+            });   
         }   
+        function setBuffer(production){
+            var x = document.getElementById("save").value;
+            if(x.length < 1){
+                x = 0;
+            }else if(x > 100){
+                x = 100;
+            }else if(x < 0){
+                x = 0;
+            }
+            var save = production*(x/100);
+            sendBuffer(save);
+        }
+        function sendBuffer(save){
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/powerPlant/updateBuffer',
+                data: {buffer: save},
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    document.getElementById("buffer").innerHTML = json.newBuffer;
+                }
+            });
+        }
+        function logout(){
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/statusZero',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    window.location.replace('http://localhost:8000');
+                }
+            });
+        }
 	</script>
 
 	<h1>Manager</h1>
@@ -266,12 +339,23 @@
     </div>
 
     <div id="powerPlant"> <p>Status of power plant:</p> <p id="status"></p> </div>
-     <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
+    <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
+    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
 
     <div class="container">
     <button type="submit" onclick="startingPlant()">Start Power Plant</button>
     <button type="submit" onclick="stopPlant()">Stop Power Plant</button>
     </div>
+
+    <div class="container">
+    <label for="save"><p>What percentage of your production would you like to save in the buffer?</p></label>
+    <input type="text" placeholder="0" id="save" required>
+    </div>
+
+    <div class="container" id="logout">
+    <button type="submit" onclick="logout()">Logout</button>
+    </div>
+
 
     <img id="myImg" height="100" width="100" style="display: none">
 	

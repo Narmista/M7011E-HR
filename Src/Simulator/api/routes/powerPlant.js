@@ -53,6 +53,19 @@ router.get('/production', checkAuth, (req, res, next) => {
   	});
 });
 
+router.post("/updateBuffer", checkAuth, (req, res, next) => {
+  PowerPlant.find({}).exec().then(powerplant => {
+    var currentBuffer = powerplant[0]['buffer'];
+    var name = powerplant[0]['name'];
+    var newBuffer = currentBuffer + parseInt(req.body.buffer);
+    var myquery = { name: name };
+    var newvalues = { $set: {buffer: newBuffer} };
+    PowerPlant.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({newBuffer});
+  });
+});
+
 
 
 module.exports = router;

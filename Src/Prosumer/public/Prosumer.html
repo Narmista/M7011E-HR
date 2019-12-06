@@ -5,19 +5,45 @@
     </script>
   </head>
 
-  <body>
+  <body onbeforeunload="return logout()">
 
 	<script>
 		$(document).ready(function() {
 			main(); 
 			setInterval(function(){
     			main(); 
-			}, 1000); //5000 = 5s
+			}, 1000); //5000 = 5s  
 		});
 
 		function main(){
 			const href = window.location.href;
 			const auth = href.split('?')[1];
+            $.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/user/tokenExpire',
+                headers: {
+                	'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                	$.ajax({
+		                type: 'get',
+		                url: 'http://localhost:3000/user/tokenZero',
+		                headers: {
+		                	'Authorization': 'Bearer ' + auth
+		                },
+		                error: function (data) {
+		                    console.debug(data);
+		                },
+		                success: function (json) {
+		             		alert("You have been logged in for too long, please login again!");
+		                	window.location.replace('http://localhost:8000');
+		                }
+		            });
+                },
+                success: function (json) {
+                }
+            });
+
 			$.ajax({
                 type: 'get',
                 url: 'http://localhost:3000/electricityConsumption',
@@ -42,7 +68,6 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                   //json.icon 
       				if(typeof json.icon != "undefined"){
                    		$("#myImg").attr('src','http://localhost:3000/' + json.icon);
                    		$("#myImg").attr('style','');
@@ -168,7 +193,22 @@
 			document.getElementById("price").innerHTML = Math.round((production - buffer)*1);
 		}
 		function logout(){
-			window.location.replace('http://localhost:8000');
+			const href = window.location.href;
+			const auth = href.split('?')[1];
+			$.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/statusZero',
+                headers: {
+                	'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                	window.location.replace('http://localhost:8000');
+                }
+            });
 		}
 		function upload(){
 			const href = window.location.href;
@@ -192,7 +232,6 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                  // setConsumption(json.elecConsumption);
                 }
             });
 		}
