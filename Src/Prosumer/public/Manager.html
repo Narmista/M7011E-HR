@@ -9,12 +9,16 @@
         $(document).ready(function() {
             main(); 
             setInterval(function(){
-                main(); 
+                main();
+                if(document.getElementById("online").value !=""){
+                    sendUser();
+                }
             }, 100000); //5000 = 5s
         });
 
         const href = window.location.href;
         const auth = href.split('?')[1];
+        var userSelected = false;
 
         function main(){
             $.ajax({
@@ -53,8 +57,8 @@
                 },
                 success: function (json) {
                     if(typeof json.icon != "undefined"){
-                        $("#myImg").attr('src','http://localhost:3000/' + json.icon);
-                        $("#myImg").attr('style','');
+                        $("#myManagerImg").attr('src','http://localhost:3000/' + json.icon);
+                        $("#myManagerImg").attr('style','');
                     }
                 }
             });
@@ -307,40 +311,80 @@
                 }
             });
         }
+        function onlineCheck(){
+            userSelected = false;
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/onlineCheck',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    $('#online').empty();
+                    var length = Object.keys(json.user).length;
+                    for(length; length > 0; length--){
+                        var x = document.getElementById("online");
+                        var option = document.createElement("option");
+                        option.text = json.user[length-1].name;
+                        x.add(option);
+                    }
+                }
+            });
+        }
+
+        function sendUser(){
+            var e = document.getElementById("online");
+            name = e.options[e.selectedIndex].text;
+            document.getElementById("prosumerName").innerHTML = name;
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/getUserData',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                data: {name: name},
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                   document.getElementById("prosumerBuffer").innerHTML = json.buffer; 
+                }
+            });
+        }
+
+        function setUser(){
+            userSelected = true;
+        }
+        
 	</script>
 
 	<h1>Manager</h1>
 
-    <div class="container" id="submit">
-    <input type="file" id="file" name="file" multiple />
-    <button type="submit" onclick="upload()">Upload</button>
-    </div> 
+    <div id="prosumerInfo">
+        <p id="topOnline">Online users:</p>
+        <form>
+            <select id="online" size="4">
+            </select>
+        </form>   
+        <button type="submit" onclick="onlineCheck()">Check who is online</button>
 
-    <div class="container">
-    <label for="username"><b>New username</b></label>
-    <input type="text" id="username" required>
-    <button type="submit" onclick="changeUser()">Change</button>
+       
+        <div id="prosumerDiv">
+            <p><p id="prosumerName"></p>'s system:</p><br>
+            <p>Buffer:</p> <p id="prosumerBuffer">0</p> kWh
+        </div>
     </div>
 
-    <div class="container">
-    <label for="name"><b>New name</b></label>
-    <input type="text" id="name" required>
-    <button type="submit" onclick="changeName()">Change</button>
-    </div>
-
-    <div class="container">
-    <label for="password"><b>New password</b></label>
-    <input type="password" id="password" required>
-    <button type="submit" onclick="changePass()">Change</button>
-    </div>
-
-    <div class="container">
-    <button type="submit" onclick="deleteAcc()">Delete Account</button>
-    </div>
+    <img id="myManagerImg" height="100" width="100" style="display: none">
 
     <div id="powerPlant"> <p>Status of power plant:</p> <p id="status"></p> </div>
     <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
-    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
+    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div><br>
 
     <div class="container">
     <button type="submit" onclick="startingPlant()">Start Power Plant</button>
@@ -352,12 +396,41 @@
     <input type="text" placeholder="0" id="save" required>
     </div>
 
+    <div id="profile">
+        <h2>Update your credentials</h2>
+        <div class="container">
+            <label for="username"><b>New username</b></label>
+            <input type="text" id="username" required>
+            <button type="submit" onclick="changeUser()">Change</button>
+        </div>
+
+        <div class="container">
+            <label for="name"><b>New name</b></label>
+            <input type="text" id="name" required>
+            <button type="submit" onclick="changeName()">Change</button>
+        </div>
+
+        <div class="container">
+            <label for="password"><b>New password</b></label>
+            <input type="password" id="password" required>
+            <button type="submit" onclick="changePass()">Change</button>
+        </div>
+    </div>
+
+
+    <div class="container" id="submit">
+    <input type="file" id="file" name="file" multiple />
+    <button type="submit" onclick="upload()">Upload</button>
+    </div> 
+
     <div class="container" id="logout">
     <button type="submit" onclick="logout()">Logout</button>
     </div>
 
+    <div class="container">
+    <button type="submit" onclick="deleteAcc()">Delete Account</button>
+    </div>
 
-    <img id="myImg" height="100" width="100" style="display: none">
 	
   </body>
 </html>

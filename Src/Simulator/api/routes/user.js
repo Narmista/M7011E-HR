@@ -263,5 +263,17 @@ router.get("/tokenZero", (req, res, next) => {
   });
 });
 
+router.post("/onlineCheck", (req, res, next) => {
+  User.find({ status: 1, role: 1}, {_id: 0, name: 1}).exec().then(user => {
+    res.json({user});
+  });
+});
+
+router.post("/getUserData", (req, res, next) => {
+  User.find({ name: req.body.name}, {buffer: 1}).exec().then(user => {
+    var buffer = user[0]['buffer'];
+    res.json({buffer});
+  });
+});
 
 module.exports = router;

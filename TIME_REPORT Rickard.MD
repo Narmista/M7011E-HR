@@ -17,3 +17,4 @@
 | 2019-12-03  | 8	    | Finished prosumer (uploading image, update frequency, logout function)  |
 | 2019-12-05  | 8	    | Started with manager (profile and power plant)  |
 | 2019-12-06  | 6	    | Added status function to users and buffer for power plant  |
+| 2019-12-08  | 6	    | Added prosumer online check to managers and view of their system  |

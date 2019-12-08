@@ -1,5 +1,5 @@
 #windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p
-, #powerPlant p, #production p{
+, #powerPlant p, #production p, #prosumerDiv p{
 	display: inline;
 }
 
@@ -21,6 +21,31 @@ body{
 	margin-right: 55%;
 }
 
+#myManagerImg {
+	float: left;
+	margin-right: 10px;
+}
+
 #submit {
 	margin-top: 30px;
 }
+
+#profile {
+	width: 40%;
+	margin-top: 40px;
+}
+
+#profile h2 {
+	margin-bottom: 10px;
+}
+
+#prosumerInfo {
+	float: right;
+	margin-right: 300px;
+}
+
+#topOnline {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
