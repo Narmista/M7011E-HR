@@ -18,3 +18,4 @@
 | 2019-12-05  | 8	    | Started with manager (profile and power plant)  |
 | 2019-12-06  | 6	    | Added status function to users and buffer for power plant  |
 | 2019-12-08  | 6	    | Added prosumer online check to managers and view of their system  |
+| 2019-12-10  | 6	    | Fixed "market" and added block  |
