@@ -5,7 +5,9 @@ const powerPlantSchema = mongoose.Schema({
 	name: String,
 	status: Number,
 	buffer: Number,
-	production: Number
+	production: Number,
+	currentPower: Number,
+	price: Number
 });
 
 module.exports = mongoose.model('PowerPlant', powerPlantSchema);

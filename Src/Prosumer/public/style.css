@@ -1,5 +1,5 @@
 #windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p
-, #powerPlant p, #production p, #prosumerDiv p{
+, #powerPlant p, #production p, #prosumerDiv p, #totalnetproductionDiv p, #currentPriceDiv p{
 	display: inline;
 }
 
@@ -31,7 +31,7 @@ body{
 }
 
 #profile {
-	width: 40%;
+	width: 60%;
 	margin-top: 40px;
 }
 
@@ -41,11 +41,16 @@ body{
 
 #prosumerInfo {
 	float: right;
-	margin-right: 300px;
+	margin-right: 200px;
+	width: 170px;
 }
 
 #topOnline {
 	margin-top: 0px;
 	margin-bottom: 0px;
+}
+
+#text {
+	width: 300px;
 }
 

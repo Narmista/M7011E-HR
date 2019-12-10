@@ -13,7 +13,7 @@
                 if(document.getElementById("online").value !=""){
                     sendUser();
                 }
-            }, 100000); //5000 = 5s
+            }, 5000); //5000 = 5s
         });
 
         const href = window.location.href;
@@ -75,6 +75,54 @@
                 },
                 success: function (json) {
                     setStatus(json.status);
+                }
+            });
+
+            $.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/user/getTotalNetProduction',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    var tot = 0;
+                    var length = Object.keys(json.user).length;
+                    for(length; length > 0; length--){
+                        tot = tot + json.user[length-1].netProduction;
+                    }
+                    document.getElementById("totalNetProduction").innerHTML = Math.round(tot);
+                }
+            });
+
+            $.ajax({
+                type: 'get',
+                url: 'http://localhost:3000/powerplant/getPrice',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    
+                 document.getElementById("currentPrice").innerHTML = json.price;
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/powerplant/producePower',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
                 }
             });
         }
@@ -246,7 +294,7 @@
             });
             setTimeout(function(){
                 startPlant(); 
-            }, 10000); //5000 = 5s
+            }, 30000); //5000 = 5s
         }  
 
         function stopPlant() {
@@ -275,6 +323,24 @@
             }
             var save = production*(x/100);
             sendBuffer(save);
+        }
+        function setPrice(){
+            var x = document.getElementById("price").value;
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/powerPlant/setPrice',
+                data: {price: x},
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+            
         }
         function sendBuffer(save){
             $.ajax({
@@ -353,10 +419,49 @@
                 },
                 success: function (json) {
                    document.getElementById("prosumerBuffer").innerHTML = json.buffer; 
+                   document.getElementById("netProduction").innerHTML = Math.round(json.netProduction);
                 }
             });
         }
-
+        function blockUser(){
+          var name = document.getElementById("prosumerName").innerHTML;
+          alert(name);
+          if(name != ""){
+              $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:3000/user/blocked',
+                    headers: {
+                        'Authorization': 'Bearer ' + auth
+                    },
+                    data: {name: name},
+                    dataType: 'json',
+                    error: function (data) {
+                        console.debug(data);
+                    },
+                    success: function (json) {
+                        setTimeout(function(){
+                            unBlock(name);
+                        }, 30000); //5000 = 5s
+                    }
+                });
+          }
+        }
+        function unBlock(name){
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/unBlocked',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                data: {name: name},
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+        }
         function setUser(){
             userSelected = true;
         }
@@ -376,7 +481,9 @@
        
         <div id="prosumerDiv">
             <p><p id="prosumerName"></p>'s system:</p><br>
+            <p>Net production:</p> <p id="netProduction">0</p> kWh<br>
             <p>Buffer:</p> <p id="prosumerBuffer">0</p> kWh
+            <button type="submit" onclick="blockUser()">Block this user</button>
         </div>
     </div>
 
@@ -384,7 +491,9 @@
 
     <div id="powerPlant"> <p>Status of power plant:</p> <p id="status"></p> </div>
     <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
-    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div><br>
+    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
+    <div id="totalnetproductionDiv"> <p>Total net production:</p> <p id="totalNetProduction">0</p> kWh</div>
+    <div id="currentPriceDiv"> <p>Price:</p> <p id="currentPrice">0</p> kr/kWh</div><br>
 
     <div class="container">
     <button type="submit" onclick="startingPlant()">Start Power Plant</button>
@@ -392,9 +501,15 @@
     </div>
 
     <div class="container">
-    <label for="save"><p>What percentage of your production would you like to save in the buffer?</p></label>
+    <label for="save"><p id="text" >What percentage of your production would you like to save in the buffer?</p></label>
     <input type="text" placeholder="0" id="save" required>
     </div>
+
+        <div class="container">
+            <label for="price"><p>Price per kWh</p></label>
+            <input type="text" id="price" required>
+            <button type="submit" onclick="setPrice()">Set price</button>
+        </div>
 
     <div id="profile">
         <h2>Update your credentials</h2>

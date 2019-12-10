@@ -41,6 +41,8 @@ router.post('/signup', (req, res, next) => {
               buffer: 0,
               role: 1,
               status: 0,
+              netProduction: 0,
+              blocked: 0
             });
             user
               .save()
@@ -243,6 +245,27 @@ router.post("/statusZero", (req, res, next) => {
   });
 });
 
+router.post("/blocked", (req, res, next) => {
+  User.find({ name: req.body.name, status: 1 }).exec().then(user => {
+    console.log(user);
+    var myquery = { name: req.body.name };
+    var newvalues = { $set: {blocked: 1} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.post("/unBlocked", (req, res, next) => {
+  User.find({ name: req.body.name, status: 1 }).exec().then(user => {
+    var myquery = { name: req.body.name}; 
+    var newvalues = { $set: {blocked: 0} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
 router.get("/tokenExpire", (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, process.env.JWT_KEY);
@@ -270,9 +293,31 @@ router.post("/onlineCheck", (req, res, next) => {
 });
 
 router.post("/getUserData", (req, res, next) => {
-  User.find({ name: req.body.name}, {buffer: 1}).exec().then(user => {
+  User.find({ name: req.body.name}, {buffer: 1, netProduction: 1}).exec().then(user => {
     var buffer = user[0]['buffer'];
-    res.json({buffer});
+    var netProduction = user[0]['netProduction'];
+    res.json({buffer, netProduction});
+  });
+});
+
+router.post("/netProduction", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {netProduction: req.body.netProduction} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.get("/getTotalNetProduction", (req, res, next) => {
+  User.find({status : 1, role: 1}, {_id: 0, netProduction: 1}).exec().then(user => {
+
+    res.json({user});
   });
 });
 

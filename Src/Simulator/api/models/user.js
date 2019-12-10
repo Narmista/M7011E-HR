@@ -8,7 +8,9 @@ const userSchema = mongoose.Schema({
 	buffer: Number,
 	image: String,
 	role: Number,
-	status: Number
+	status: Number,
+	netProduction: Number,
+	blocked: Number
 });
 
 module.exports = mongoose.model('User', userSchema);

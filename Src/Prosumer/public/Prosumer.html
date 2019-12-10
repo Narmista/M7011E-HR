@@ -12,7 +12,7 @@
 			main(); 
 			setInterval(function(){
     			main(); 
-			}, 1000); //5000 = 5s  
+			}, 100000); //5000 = 5s  
 		});
 
 		function main(){
@@ -77,6 +77,20 @@
 
             $.ajax({
                 type: 'get',
+                url: 'http://localhost:3000/powerplant/getPrice',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    setPrice(json.price);
+                }
+            });
+
+            $.ajax({
+                type: 'get',
                 url: 'http://localhost:3000/weather/dailyWeather',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
@@ -119,8 +133,27 @@
 		function setNetProduction(wind){
 			var y = wind*10 - Number(document.getElementById("consumption").innerHTML);
 			document.getElementById("netProduction").innerHTML = Math.round(y);
+            setOwnNetProduction(y);
 			setBuffer(y);
 		}
+        function setOwnNetProduction(production){
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:3000/user/netProduction',
+                    data: {netProduction: production},
+                    dataType: 'json',
+                    headers: {
+                        'Authorization': 'Bearer ' + auth
+                    },
+                    error: function (data) {
+                        console.debug(data);
+                    },
+                    success: function (json) {
+                    }
+                });
+        }
 		function setBuffer(production){
 			var x;
 			if(production > 0){
@@ -133,7 +166,8 @@
 					x = 0;
 				}
 				var save = production*(x/100);
-				sendBuffer(save, production);
+                sellPower(production-save);
+				sendBuffer(save);
 			}else{
 				x = document.getElementById("buy").value;
 				if(x.length < 1){
@@ -162,14 +196,55 @@
                 },
                 success: function (json) {
                 	if(save + json.currentBuffer < 0){
-                		sendBuffer(-json.currentBuffer, production);   
+                		sendBuffer(-json.currentBuffer);   
+                        buyPower(production+json.currentBuffer);
                 	} else {
-                		sendBuffer(save, production);
+                		sendBuffer(save);
+                        buyPower(production-save);
                 	}
                 }
             });
 		}
-		function sendBuffer(value, production){
+        function buyPower(power) {
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/powerplant/buyPower',
+                dataType: 'json',
+                data: {power: power},
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    if(!json.enoughPower){
+                        document.getElementById("netProduction").innerHTML = "POWER OUTAGE!!!";
+                    }
+                }
+            });
+        }
+        function sellPower(power) {
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/powerplant/sellPower',
+                dataType: 'json',
+                data: {power: power},
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+        }
+		function sendBuffer(value){
 			const href = window.location.href;
 			const auth = href.split('?')[1];
 			$.ajax({
@@ -185,12 +260,11 @@
                 },
                 success: function (json) {
                 	document.getElementById("buffer").innerHTML = json.newBuffer;
-                	setPrice(value, production);
                 }
             });
 		}
-		function setPrice(buffer, production){
-			document.getElementById("price").innerHTML = Math.round((production - buffer)*1);
+		function setPrice(price){
+			document.getElementById("price").innerHTML = price;
 		}
 		function logout(){
 			const href = window.location.href;
@@ -246,7 +320,7 @@
 	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
 	<div id="netProductionDiv"><p>Net production: <p id="netProduction"></p> kWh</p></div>
 	<div id="bufferDiv"><p>Buffer: <p id="buffer"></p> kWh</p></div>
-	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr</p></div>
+	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr/kWh</p></div>
 
 	<div class="container">
     <label for="save"><p>What percentage of your overproduction would you like to save in the buffer?</p></label>
