@@ -42,7 +42,8 @@ router.post('/signup', (req, res, next) => {
               role: 1,
               status: 0,
               netProduction: 0,
-              blocked: 0
+              blocked: 0,
+              blackOut: 0
             });
             user
               .save()
@@ -292,6 +293,12 @@ router.post("/onlineCheck", (req, res, next) => {
   });
 });
 
+router.post("/blackOutCheck", (req, res, next) => {
+  User.find({ status: 1, role: 1, blackOut: 1}, {_id: 0, name: 1}).exec().then(user => {
+    res.json({user});
+  });
+});
+
 router.post("/getUserData", (req, res, next) => {
   User.find({ name: req.body.name}, {buffer: 1, netProduction: 1}).exec().then(user => {
     var buffer = user[0]['buffer'];
@@ -308,6 +315,34 @@ router.post("/netProduction", (req, res, next) => {
   User.find({ username: name }).exec().then(user => {
     var myquery = { username: name };
     var newvalues = { $set: {netProduction: req.body.netProduction} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.post("/setBlackOut", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {blackOut: 1} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.post("/setNotBlackOut", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {blackOut: 0} };
     User.updateOne(myquery, newvalues, function(err, res) {
     });
     res.json({});

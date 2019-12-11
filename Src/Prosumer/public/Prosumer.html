@@ -12,7 +12,7 @@
 			main(); 
 			setInterval(function(){
     			main(); 
-			}, 100000); //5000 = 5s  
+			}, 1000); //5000 = 5s  
 		});
 
 		function main(){
@@ -222,7 +222,45 @@
                 success: function (json) {
                     if(!json.enoughPower){
                         document.getElementById("netProduction").innerHTML = "POWER OUTAGE!!!";
+                        setBlackOut();
+                    }else{
+                        setNotBlackOut();
                     }
+
+                }
+            });
+        }
+        function setBlackOut(){
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/setBlackOut',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+        }
+        function setNotBlackOut(){
+            const href = window.location.href;
+            const auth = href.split('?')[1];
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/setNotBlackOut',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
                 }
             });
         }
@@ -241,6 +279,9 @@
                     console.debug(data);
                 },
                 success: function (json) {
+                    if(json.blocked){
+                        document.getElementById("price").innerHTML = "You are blocked from selling power!";
+                    }
                 }
             });
         }

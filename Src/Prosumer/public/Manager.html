@@ -10,10 +10,11 @@
             main(); 
             setInterval(function(){
                 main();
+                blackOutCheck()
                 if(document.getElementById("online").value !=""){
                     sendUser();
                 }
-            }, 5000); //5000 = 5s
+            }, 1000); //5000 = 5s
         });
 
         const href = window.location.href;
@@ -95,6 +96,7 @@
                         tot = tot + json.user[length-1].netProduction;
                     }
                     document.getElementById("totalNetProduction").innerHTML = Math.round(tot);
+                    document.getElementById("recommendedPrice").innerHTML = Math.round(tot)/10;
                 }
             });
 
@@ -402,6 +404,31 @@
             });
         }
 
+        function blackOutCheck(){
+            userSelected = false;
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:3000/user/blackOutCheck',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    $('#blackOut').empty();
+                    var length = Object.keys(json.user).length;
+                    for(length; length > 0; length--){
+                        var x = document.getElementById("blackOut");
+                        var option = document.createElement("option");
+                        option.text = json.user[length-1].name;
+                        x.add(option);
+                    }
+                }
+            });
+        }
+
         function sendUser(){
             var e = document.getElementById("online");
             name = e.options[e.selectedIndex].text;
@@ -425,7 +452,6 @@
         }
         function blockUser(){
           var name = document.getElementById("prosumerName").innerHTML;
-          alert(name);
           if(name != ""){
               $.ajax({
                     type: 'post',
@@ -470,6 +496,14 @@
 
 	<h1>Manager</h1>
 
+     <div id="blackOutInfoDiv">
+        <p id="blackOutInfo">Users that currently has a black-out: </p>
+        <form>
+            <select id="blackOut" size="4">
+            </select>
+        </form>   
+    </div>
+
     <div id="prosumerInfo">
         <p id="topOnline">Online users:</p>
         <form>
@@ -493,6 +527,7 @@
     <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
     <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
     <div id="totalnetproductionDiv"> <p>Total net production:</p> <p id="totalNetProduction">0</p> kWh</div>
+    <div id="recommendedPriceDiv"> <p>Recommended price:</p> <p id="recommendedPrice">0</p> kr/kWh</div>
     <div id="currentPriceDiv"> <p>Price:</p> <p id="currentPrice">0</p> kr/kWh</div><br>
 
     <div class="container">

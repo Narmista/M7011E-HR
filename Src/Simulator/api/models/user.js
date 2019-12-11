@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
 	role: Number,
 	status: Number,
 	netProduction: Number,
-	blocked: Number
+	blocked: Number,
+	blackOut: Number
 });
 
 module.exports = mongoose.model('User', userSchema);

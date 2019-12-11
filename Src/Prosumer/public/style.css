@@ -1,5 +1,6 @@
 #windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p
-, #powerPlant p, #production p, #prosumerDiv p, #totalnetproductionDiv p, #currentPriceDiv p{
+, #powerPlant p, #production p, #prosumerDiv p, #totalnetproductionDiv p, #currentPriceDiv p, #blackOutInfoDiv p
+, #recommendedPriceDiv p{
 	display: inline;
 }
 
@@ -41,7 +42,7 @@ body{
 
 #prosumerInfo {
 	float: right;
-	margin-right: 200px;
+	margin-right: 100px;
 	width: 170px;
 }
 
@@ -52,5 +53,9 @@ body{
 
 #text {
 	width: 300px;
+}
+
+#blackOutInfoDiv {
+	float: right;
 }
 

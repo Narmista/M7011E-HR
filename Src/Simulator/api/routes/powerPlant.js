@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
-
+const User = require('../models/user');
 const PowerPlant = require('../models/powerPlant');
 
 router.get('/status', checkAuth, (req, res, next) => {
@@ -125,16 +126,28 @@ router.post("/buyPower", checkAuth, (req, res, next) => {
 });
 
 router.post("/sellPower", checkAuth, (req, res, next) => {
-  PowerPlant.find({}).exec().then(powerplant => {
-      var name = powerplant[0]['name'];
-      var currentBuffer = powerplant[0]['buffer'];
-      var newBuffer = currentBuffer + parseInt(req.body.power);
-      var myquery = { name: name };
-      var newvalues = { $set: {buffer: newBuffer} };
-      PowerPlant.updateOne(myquery, newvalues, function(err, res) {
-      });
-      res.json({});
-    });  
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
+  var blocked = false;
+
+  User.find({ username: name }).exec().then(user => {
+    if(user[0]['blocked'] == 1){
+      blocked = true;
+      res.json({blocked});
+    }else{
+      PowerPlant.find({}).exec().then(powerplant => {
+        var name = powerplant[0]['name'];
+        var currentBuffer = powerplant[0]['buffer'];
+        var newBuffer = currentBuffer + parseInt(req.body.power);
+        var myquery = { name: name };
+        var newvalues = { $set: {buffer: newBuffer} };
+        PowerPlant.updateOne(myquery, newvalues, function(err, res) {
+        });
+        res.json({blocked});
+      });  
+    }
+  });  
 });
 
 
