@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
-
 const dailyWind = require('../models/dailyWind');
 
 
@@ -43,7 +42,5 @@ router.post('/currentWeather', (req, res, next) => {
 	}
 	res.send({currentWeather});
 });
-
-
 
 module.exports = router;

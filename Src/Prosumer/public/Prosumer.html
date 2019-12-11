@@ -15,19 +15,21 @@
 			}, 1000); //5000 = 5s  
 		});
 
+        const href = window.location.href;
+        const auth = href.split('?')[1];
+        
+
 		function main(){
-			const href = window.location.href;
-			const auth = href.split('?')[1];
             $.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/user/tokenExpire',
+                url: 'http://54.197.39.195:3000/user/tokenExpire',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                 	$.ajax({
 		                type: 'get',
-		                url: 'http://localhost:3000/user/tokenZero',
+		                url: 'http://54.197.39.195:3000/user/tokenZero',
 		                headers: {
 		                	'Authorization': 'Bearer ' + auth
 		                },
@@ -36,17 +38,16 @@
 		                },
 		                success: function (json) {
 		             		alert("You have been logged in for too long, please login again!");
-		                	window.location.replace('http://localhost:8000');
+		                	window.location.replace('http://54.197.39.195:8000');
 		                }
 		            });
                 },
                 success: function (json) {
                 }
             });
-
 			$.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/electricityConsumption',
+                url: 'http://54.197.39.195:3000/electricityConsumption',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -57,10 +58,9 @@
                    setConsumption(json.elecConsumption);
                 }
             });
-
 			$.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/user/getImage',
+                url: 'http://54.197.39.195:3000/user/getImage',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -69,15 +69,14 @@
                 },
                 success: function (json) {
       				if(typeof json.icon != "undefined"){
-                   		$("#myImg").attr('src','http://localhost:3000/' + json.icon);
+                   		$("#myImg").attr('src','http://54.197.39.195:3000/' + json.icon);
                    		$("#myImg").attr('style','');
                 	}
                 }
             });
-
             $.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/powerplant/getPrice',
+                url: 'http://54.197.39.195:3000/powerplant/getPrice',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -88,10 +87,9 @@
                     setPrice(json.price);
                 }
             });
-
             $.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/weather/dailyWeather',
+                url: 'http://54.197.39.195:3000/weather/dailyWeather',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -101,7 +99,7 @@
                 success: function (json) {
                   	$.ajax({
 		                type: 'post',
-		                url: 'http://localhost:3000/weather/currentWeather',
+		                url: 'http://54.197.39.195:3000/weather/currentWeather',
 		                data: {dailyWeather: json.dailyWeather},
 		                dataType: 'json',
 		                headers: {
@@ -119,8 +117,6 @@
                 }
             });
 		}
-
-
 		function setConsumption(elecConsumption){
 			document.getElementById("consumption").innerHTML = Math.round(elecConsumption*10);
 		}
@@ -137,11 +133,9 @@
 			setBuffer(y);
 		}
         function setOwnNetProduction(production){
-            const href = window.location.href;
-            const auth = href.split('?')[1];
             $.ajax({
                     type: 'post',
-                    url: 'http://localhost:3000/user/netProduction',
+                    url: 'http://54.197.39.195:3000/user/netProduction',
                     data: {netProduction: production},
                     dataType: 'json',
                     headers: {
@@ -182,11 +176,9 @@
 			}
 		}
 		function getBuffer(save, production){
-			const href = window.location.href;
-			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'get',
-                url: 'http://localhost:3000/user/getBuffer',
+                url: 'http://54.197.39.195:3000/user/getBuffer',
                 dataType: 'json',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
@@ -206,11 +198,9 @@
             });
 		}
         function buyPower(power) {
-            const href = window.location.href;
-            const auth = href.split('?')[1];
             $.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/powerplant/buyPower',
+                url: 'http://54.197.39.195:3000/powerplant/buyPower',
                 dataType: 'json',
                 data: {power: power},
                 headers: {
@@ -231,11 +221,9 @@
             });
         }
         function setBlackOut(){
-            const href = window.location.href;
-            const auth = href.split('?')[1];
             $.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/setBlackOut',
+                url: 'http://54.197.39.195:3000/user/setBlackOut',
                 dataType: 'json',
                 headers: {
                     'Authorization': 'Bearer ' + auth
@@ -248,11 +236,9 @@
             });
         }
         function setNotBlackOut(){
-            const href = window.location.href;
-            const auth = href.split('?')[1];
             $.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/setNotBlackOut',
+                url: 'http://54.197.39.195:3000/user/setNotBlackOut',
                 dataType: 'json',
                 headers: {
                     'Authorization': 'Bearer ' + auth
@@ -265,11 +251,9 @@
             });
         }
         function sellPower(power) {
-            const href = window.location.href;
-            const auth = href.split('?')[1];
             $.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/powerplant/sellPower',
+                url: 'http://54.197.39.195:3000/powerplant/sellPower',
                 dataType: 'json',
                 data: {power: power},
                 headers: {
@@ -286,11 +270,9 @@
             });
         }
 		function sendBuffer(value){
-			const href = window.location.href;
-			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/updateBuffer',
+                url: 'http://54.197.39.195:3000/user/updateBuffer',
                 data: {buffer: value},
 		        dataType: 'json',
                 headers: {
@@ -308,11 +290,9 @@
 			document.getElementById("price").innerHTML = price;
 		}
 		function logout(){
-			const href = window.location.href;
-			const auth = href.split('?')[1];
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/statusZero',
+                url: 'http://54.197.39.195:3000/user/statusZero',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -321,19 +301,17 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('http://localhost:8000');
+                	window.location.replace('http://54.197.39.195:8000');
                 }
             });
 		}
 		function upload(){
-			const href = window.location.href;
-			const auth = href.split('?')[1];
 			var file_data = $('#file').prop('files')[0];
             var form_data = new FormData();
             form_data.append('avatar', file_data);
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/uploadImage',
+                url: 'http://54.197.39.195:3000/user/uploadImage',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -355,7 +333,6 @@
 	<h1>Green Lean Electrics</h1>
 
 	<img id="myImg" height="100" width="100" style="display: none">
-
 	<div id="windDiv"> <p>Current wind:</p> <p id="wind"></p> <p>m/s</p> </div>
 	<div id="productionDiv"><p>Current production: <p id="production"></p> kWh</p></div>
 	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
@@ -364,22 +341,21 @@
 	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr/kWh</p></div>
 
 	<div class="container">
-    <label for="save"><p>What percentage of your overproduction would you like to save in the buffer?</p></label>
-    <input type="text" placeholder="0" id="save" required>
+        <label for="save"><p>What percentage of your overproduction would you like to save in the buffer?</p></label>
+        <input type="text" placeholder="0" id="save" required>
 	</div>
 	<div class="container">
-    <label for="buy"><p>What percentage of your underproduction would you like to take from the buffer?</p></label>
-    <input type="text" placeholder="0" id="buy" required>
+        <label for="buy"><p>What percentage of your underproduction would you like to take from the buffer?</p></label>
+        <input type="text" placeholder="0" id="buy" required>
 	</div>
 
 	<div class="container" id="submit">
-	<input type="file" id="file" name="file" multiple />
-    <button type="submit" onclick="upload()">Upload</button>
+    	<input type="file" id="file" name="file" multiple />
+        <button type="submit" onclick="upload()">Upload</button>
 	</div> 
 
 	<div class="container" id="logout">
-    <button type="submit" onclick="logout()">Logout</button>
+        <button type="submit" onclick="logout()">Logout</button>
 	</div>
-
   </body>
 </html>

@@ -29,5 +29,4 @@ app.use('/electricityConsumption', electricityConsumptionRoute);
 app.use('/user', userRoute);
 app.use('/powerPlant', powerPlantRoute);
 
-
 module.exports = app;

@@ -9,7 +9,7 @@
 		function login(uname, pwd) {
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/login',
+                url: 'http://54.197.39.195:3000/user/login',
                 data: {username: uname, password: pwd},
                 dataType: 'json',
                 error: function (data) {
@@ -24,30 +24,23 @@
                 }
             });
 		}
-
 		function loginValues(){
 			login(document.getElementById("username").value, document.getElementById("password").value);
 		}
-    function signUp(){
-      window.location.replace('/static/SignUp.html');
-    }
+	    function signUp(){
+	      window.location.replace('/static/SignUp.html');
+	    }
 	</script>
 
 	<h1>Login</h1>
 
 	<div class="container">
-    <label for="username"><b>Username</b></label>
-    <input type="text" id="username" required>
-
-    <label for="password"><b>Password</b></label>
-    <input type="password" id="password" required>
-
-    <button type="submit" onclick="loginValues()">Login</button>
-
-    <button type="submit" onclick="signUp()">Register</button>
-  </div>
-
-
-	
+	    <label for="username"><b>Username</b></label>
+	    <input type="text" id="username" required>
+	    	<label for="password"><b>Password</b></label>
+	    <input type="password" id="password" required>
+	    <button type="submit" onclick="loginValues()">Login</button>
+	    <button type="submit" onclick="signUp()">Register</button>
+  	</div>
   </body>
 </html>

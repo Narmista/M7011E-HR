@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage: storage});
-
 const User = require('../models/user');
 
 router.post('/signup', (req, res, next) => {
@@ -248,7 +247,6 @@ router.post("/statusZero", (req, res, next) => {
 
 router.post("/blocked", (req, res, next) => {
   User.find({ name: req.body.name, status: 1 }).exec().then(user => {
-    console.log(user);
     var myquery = { name: req.body.name };
     var newvalues = { $set: {blocked: 1} };
     User.updateOne(myquery, newvalues, function(err, res) {

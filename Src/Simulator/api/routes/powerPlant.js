@@ -150,14 +150,11 @@ router.post("/sellPower", checkAuth, (req, res, next) => {
   });  
 });
 
-
 router.get("/getPrice", checkAuth, (req, res, next) => {
   PowerPlant.find({}).exec().then(powerplant => {
     var price = powerplant[0]['price'];
     res.json({price});
   });
 });
-
-
 
 module.exports = router;

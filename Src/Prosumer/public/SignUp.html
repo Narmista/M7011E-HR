@@ -9,18 +9,17 @@
 		function signup(uname, pwd, nme) {
 			$.ajax({
                 type: 'post',
-                url: 'http://localhost:3000/user/signup',
+                url: 'http://54.197.39.195:3000/user/signup',
                 data: {username: uname, password: pwd, name: nme},
                 dataType: 'text',
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('http://localhost:8000');
+                	window.location.replace('http://54.197.39.195:8000');
                 }
             });
 		}
-
 		function register(){
 			signup(document.getElementById("username").value, document.getElementById("password").value, document.getElementById("name").value);
 		}
@@ -29,17 +28,13 @@
 	<h1>Sign Up</h1>
 
 	<div class="container">
-    <label for="name"><b>Name</b></label>
-    <input type="text" id="name" required>
-
-    <label for="username"><b>Username</b></label>
-    <input type="text" id="username" required>
-
-    <label for="password"><b>Password</b></label>
-    <input type="password" id="password" required>
-
-    <button type="submit" onclick="register()">Register</button>
+        <label for="name"><b>Name</b></label>
+        <input type="text" id="name" required>
+            <label for="username"><b>Username</b></label>
+        <input type="text" id="username" required>
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="password" required>
+        <button type="submit" onclick="register()">Register</button>
   	</div>
-	
   </body>
 </html>
