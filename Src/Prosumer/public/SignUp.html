@@ -9,14 +9,14 @@
 		function signup(uname, pwd, nme) {
 			$.ajax({
                 type: 'post',
-                url: 'http://54.197.39.195:3000/user/signup',
+                url: 'http://54.162.94.111:3000/user/signup',
                 data: {username: uname, password: pwd, name: nme},
                 dataType: 'text',
                 error: function (data) {
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('http://54.197.39.195:8000');
+                	window.location.replace('http://54.162.94.111:7000');
                 }
             });
 		}
