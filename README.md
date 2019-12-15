@@ -18,5 +18,4 @@ How to start the servers yourself (in windows):
 5:	open another command promt and find your way to the simulator folder
 6:	run npm start
 ]]></content>
-  <tabTrigger>readme</tabTrigger>
 </snippet>
