@@ -2,7 +2,7 @@
 
 How to connect to the running server (the server running is quite slow):
 
-1.	go to 54.162.94.111:7000 in a webbrowser(we used firefox)
+1.	go to 54.162.94.111:7000 in a webbrowser (please use firefox because thats where we know everything works as intended)
 2.	make a login to access a prosumer
 3. 	login to username admin and password admin to access a manager
 
