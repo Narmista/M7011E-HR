@@ -20,3 +20,5 @@
 | 2019-12-08  | 6	      | Added prosumer online check to managers and view of their system  |
 | 2019-12-10  | 6	      | Fixed "market" and added block  |
 | 2019-12-11  | 5	      | Prepared the project for presentation   |
+| 2019-12-13  | 4	      | Started working on the report   |
+| 2019-12-15  | 6	      | Finished the report and the deployment   |
