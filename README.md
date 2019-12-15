@@ -1,5 +1,4 @@
-<snippet>
-  <content><![CDATA[
+
 ${1:M7011E-HR}
 ## Testing
 How to connect to the running server (the server running is quite slow):
@@ -17,5 +16,3 @@ How to start the servers yourself (in windows):
 4:	run "node server.js"
 5:	open another command promt and find your way to the simulator folder
 6:	run npm start
-]]></content>
-</snippet>
