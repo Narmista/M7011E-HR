@@ -1,6 +1,6 @@
 <snippet>
   <content><![CDATA[
-# M7011E-HR
+${1:M7011E-HR}
 ## Testing
 How to connect to the running server (the server running is quite slow):
 1. Fork it!
