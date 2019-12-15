@@ -6,6 +6,7 @@ How to connect to the running server (the server running is quite slow):
 2.	make a login to access a prosumer
 3. 	login to username admin and password admin to access a manager
 
+
 How to start the servers yourself (in windows):
 
 1.	you will need node.js to run everything
