@@ -1,0 +1,94 @@
+#windDiv p, #productionDiv p, #consumptionDiv p, #netProductionDiv p, #bufferDiv p, #priceDiv p
+, #powerPlant p, #production p, #prosumerDiv p, #totalnetproductionDiv p, #currentPriceDiv p, #blackOutInfoDiv p
+, #recommendedPriceDiv p{
+	display: inline;
+}
+
+html{
+	background-color: #99ff66;
+}
+
+h1{
+	color: white;
+	font-size: 50px;
+	font-family: Arial, Helvetica, sans-serif;
+	-webkit-text-stroke: 0.8px black;
+	text-align: center;
+}
+
+h2{
+	color: black;
+	font-size: 30px;
+}
+
+#container{
+	background-color: white;
+	width: 800px;
+	height: 800px;
+	margin: auto;
+	border-color: black;
+	border-style: solid;
+	border-radius: 5px;
+  	box-shadow: 1px 1px 1px 2px grey;
+}
+
+#subcontainer{
+
+  	justify-content: center;
+  	display: grid;
+  	align-items: center;
+  	grid-template-rows: 100px 30px 30px 30px 30px 30px 30px 80px 80px 80px 100px;
+  
+}
+
+#myImg{
+	float: right;
+	margin: 10px;
+}
+
+.button{
+color: #494949 !important;
+font-size: 13px;
+font-family: Arial, Helvetica, sans-serif;
+text-transform: uppercase;
+text-decoration: none;
+background: #ffffff;
+padding: 5px;
+border: 2px solid #494949 !important;
+display: inline-block;
+transition: all 0.4s ease 0s;
+}
+
+.button:hover {
+color: #494949 !important;
+background: #99ff66;
+border-color: #99ff66 !important;
+transition: all 0.4s ease 0s;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	padding: 5px;
+}
+
+.input{
+color: #494949 !important;
+text-transform: uppercase;
+text-decoration: none;
+background: #ffffff;
+padding: 5px;
+border: 2px solid #494949 !important;
+display: inline-block;
+transition: all 0.4s ease 0s;
+width: 100px;
+}
+
+#text {
+	margin-bottom: 2px ;
+}
+

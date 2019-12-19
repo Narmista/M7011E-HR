@@ -1,6 +1,6 @@
 <!DOCTYPE html>
   <head>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styleProsumer.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
     </script>
   </head>
@@ -332,30 +332,36 @@
 
 	<h1>Green Lean Electrics</h1>
 
-	<img id="myImg" height="100" width="100" style="display: none">
-	<div id="windDiv"> <p>Current wind:</p> <p id="wind"></p> <p>m/s</p> </div>
-	<div id="productionDiv"><p>Current production: <p id="production"></p> kWh</p></div>
-	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
-	<div id="netProductionDiv"><p>Net production: <p id="netProduction"></p> kWh</p></div>
-	<div id="bufferDiv"><p>Buffer: <p id="buffer"></p> kWh</p></div>
-	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr/kWh</p></div>
+    <div id="container">
+    	<img id="myImg" height="100" width="100" style="display: none">
+        <div id="subcontainer">
+            <h2>My Profile</h2>
+        	<div id="windDiv"> <p>Current wind:</p> <p id="wind"></p> <p>m/s</p> </div>
+        	<div id="productionDiv"><p>Current production: <p id="production"></p> kWh</p></div>
+        	<div id="consumptionDiv"><p>Current consumption: <p id="consumption"></p> kWh</p></div>
+        	<div id="netProductionDiv"><p>Net production: <p id="netProduction"></p> kWh</p></div>
+        	<div id="bufferDiv"><p>Buffer: <p id="buffer"></p> kWh</p></div>
+        	<div id="priceDiv"><p>Current electricity price: <p id="price"></p> kr/kWh</p></div>
 
-	<div class="container">
-        <label for="save"><p>What percentage of your overproduction would you like to save in the buffer?</p></label>
-        <input type="text" placeholder="0" id="save" required>
-	</div>
-	<div class="container">
-        <label for="buy"><p>What percentage of your underproduction would you like to take from the buffer?</p></label>
-        <input type="text" placeholder="0" id="buy" required>
-	</div>
+        	<div class="container">
+                <label for="save"><p id="text">What percentage of your overproduction would you like to save in the buffer?</p></label>
+                <input class="input" type="number" placeholder="0" id="save" min="0" max="100" required>
+        	</div>
+        	<div class="container">
+                <label for="buy"><p id="text">What percentage of your underproduction would you like to take from the buffer?</p></label>
+                <input class="input" type="number" placeholder="0" id="buy" min="0" max="100" required>
+        	</div>
+        	<div class="container" id="submit">
+                <p id="text">Choose an image of your house with the image button, then upload it by pressing the upload button.</p>
+            	<input type="file" id="file" name="file" class="inputfile"/>
+                <label class="button" for="file">Image</label>
+                <button class="button" type="submit" onclick="upload()">Upload</button>
+        	</div> 
 
-	<div class="container" id="submit">
-    	<input type="file" id="file" name="file" multiple />
-        <button type="submit" onclick="upload()">Upload</button>
-	</div> 
-
-	<div class="container" id="logout">
-        <button type="submit" onclick="logout()">Logout</button>
-	</div>
+        	<div class="container" id="logout">
+                <button class="button" type="submit" onclick="logout()">Logout</button>
+        	</div>
+        </div>
+    </div>
   </body>
 </html>

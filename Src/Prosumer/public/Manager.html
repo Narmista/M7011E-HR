@@ -1,6 +1,6 @@
 <!DOCTYPE html>
   <head>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styleManager.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
     </script>
   </head>
@@ -19,7 +19,6 @@
 
         const href = window.location.href;
         const auth = href.split('?')[1];
-        var userSelected = false;
 
         function main(){
             $.ajax({
@@ -124,6 +123,8 @@
                 }
             });
         }
+
+
         function setStatus(status){
             if(status == 0){
                 status = "stopped";
@@ -181,76 +182,85 @@
             });
         }
         function changeUser() {
-            var username = document.getElementById("username").value;
+            var e = document.getElementById("users");
+            var name = e.options[e.selectedIndex].text;
+            var newUsername = document.getElementById("username").value;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/changeUser',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
-                data: {username: username},
+                data: {newUsername: newUsername, name: name},
                 dataType: 'text',
                 error: function (data) {
+                    alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('Username has been changed, please login again!')
-                    window.location.replace('http://54.162.94.111:7000');
+                    alert('The username has been changed!');
                 }
             });
         }
         function changeName() {
-            var name = document.getElementById("name").value;
+            var e = document.getElementById("users");
+            var name = e.options[e.selectedIndex].text;
+            var newName = document.getElementById("name").value;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/changeName',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
-                data: {name: name},
+                data: {name: name, newName: newName},
                 dataType: 'text',
                 error: function (data) {
+                    alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('Name has been changed, please login again!')
-                    window.location.replace('http://54.162.94.111:7000');
+                    alert('The name has been changed, please update the user list!');
                 }
             });
         }
         function changePass() {
-            var password = document.getElementById("password").value;
+            var e = document.getElementById("users");
+            var name = e.options[e.selectedIndex].text;
+            var newPassword = document.getElementById("password").value;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/changePass',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
-                data: {password: password},
+                data: {newPassword: newPassword, name: name},
                 dataType: 'text',
                 error: function (data) {
+                    alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('Password has been changed, please login again!')
-                    window.location.replace('http://54.162.94.111:7000');
+                    alert('The password has been changed!');
                 }
             });
         }	
         function deleteAcc() {
+            var e = document.getElementById("users");
+            var name = e.options[e.selectedIndex].text;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/delete',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
+                data: {name: name},
                 dataType: 'text',
                 error: function (data) {
+                    alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('Your account has been deleted')
-                    window.location.replace('http://54.162.94.111:7000');
+                    alert('The user account has been deleted, please update the user list!');
                 }
             });
         }	
@@ -270,6 +280,7 @@
             });
         }   
         function startingPlant() {
+            if(document.getElementById("status").innerHTML == )
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/powerPlant/starting',
@@ -368,7 +379,6 @@
             });
         }
         function onlineCheck(){
-            userSelected = false;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/onlineCheck',
@@ -391,8 +401,30 @@
                 }
             });
         }
+        function usersCheck(){
+            $.ajax({
+                type: 'post',
+                url: 'http://54.162.94.111:3000/user/usersCheck',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    $('#users').empty();
+                    var length = Object.keys(json.user).length;
+                    for(length; length > 0; length--){
+                        var x = document.getElementById("users");
+                        var option = document.createElement("option");
+                        option.text = json.user[length-1].name;
+                        x.add(option);
+                    }
+                }
+            });
+        }
         function blackOutCheck(){
-            userSelected = false;
             $.ajax({
                 type: 'post',
                 url: 'http://54.162.94.111:3000/user/blackOutCheck',
@@ -474,96 +506,114 @@
                 }
             });
         }
-        function setUser(){
-            userSelected = true;
-        }
-        
+
 	</script>
 
-	<h1>Manager</h1>
+	<h1>Green Lean Electrics</h1>
 
-     <div id="blackOutInfoDiv">
-        <p id="blackOutInfo">Users that currently has a black-out: </p>
-        <form>
-            <select id="blackOut" size="4">
-            </select>
-        </form>   
-    </div>
+    <div id="container">
+        <div id="subcontainer">
+            <h2>Manager</h2>
+             <div id="blackOutInfoDiv">
+                <p id="blackOutInfo">Users that currently has a black-out: </p>
+                <form id="form">
+                    <select id="blackOut" size="4">
+                    </select>
+                </form>   
+            </div>
 
-    <div id="prosumerInfo">
-        <p id="topOnline">Online users:</p>
-        <form>
-            <select id="online" size="4">
-            </select>
-        </form>   
-        <button type="submit" onclick="onlineCheck()">Check who is online</button>
+            <div id="prosumerInfo">
+                <p id="topOnline">Online users:</p>
+                <form id="form">
+                    <select id="online" size="4">
+                    </select>
+                </form>   
+                <button class="button" type="submit" onclick="onlineCheck()">Check who is online</button>
 
+               
+                <div id="prosumerDiv">
+                    <p><p id="prosumerName"></p>'s system:</p><br>
+                    <p>Net production:</p> <p id="netProduction">0</p> kWh<br>
+                    <p>Buffer:</p> <p id="prosumerBuffer">0</p> kWh
+                    <button class="button" type="submit" onclick="blockUser()">Block this user</button>
+                </div>
+            </div>
+
+            <img id="myManagerImg" height="100" width="100" style="display: none">
+
+            <div id="powerPlant"> <p>Status of power plant:</p> <p id="status"></p> </div>
+            <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
+            <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
+            <div id="totalnetproductionDiv"> <p>Total net production:</p> <p id="totalNetProduction">0</p> kWh</div>
+            <div id="recommendedPriceDiv"> <p>Recommended price:</p> <p id="recommendedPrice">0</p> kr/kWh</div>
+            <div id="currentPriceDiv"> <p>Price:</p> <p id="currentPrice">0</p> kr/kWh</div><br>
+
+            <div class="container">
+                <button class="button" type="submit" onclick="startingPlant()">Start Power Plant</button>
+                <button class="button" type="submit" onclick="stopPlant()" >Stop Power Plant</button>
+            </div>
+
+            <div class="container">
+                <label for="save"><p id="text" >What percentage of your production would you like to save in the buffer?</p></label>
+                 <input class="input" type="number" placeholder="0" id="save" min="0" max="100" required>
+            </div>
+
+                <div class="container">
+                    <label for="price"><p id="text">Price per kWh</p></label>
+                     <input class="input" type="number" placeholder="0" id="price" min="0" required>
+                    <button class="button" type="submit" onclick="setPrice()">Set price</button>
+                </div>
+
+            <div class="container" id="submit">
+                <p id="text">Choose a profile picture with the image button, then upload it by pressing the upload button.</p>
+                <input type="file" id="file" name="file" class="inputfile"/>
+                <label class="button" for="file">Image</label>
+                <button class="button" type="submit" onclick="upload()">Upload</button>
+            </div> 
        
-        <div id="prosumerDiv">
-            <p><p id="prosumerName"></p>'s system:</p><br>
-            <p>Net production:</p> <p id="netProduction">0</p> kWh<br>
-            <p>Buffer:</p> <p id="prosumerBuffer">0</p> kWh
-            <button type="submit" onclick="blockUser()">Block this user</button>
+                <h2>Handle a users account</h2>
+
+                <p>Select the user in the list below that you would like to update the credentials of.</p>
+
+                <div id="updateCred">
+                    <div class="newCred">
+                        <label for="username"><b>New username</b></label>
+                        <input class="input" type="text" id="username" required>
+                        <button class="button" type="submit" onclick="changeUser()">Change</button>
+                    </div>
+
+                    <div class="newCred">
+                        <label for="name"><b>New name</b></label>
+                        <input class="input" type="text" id="name" required>
+                        <button class="button" type="submit" onclick="changeName()">Change</button>
+                    </div>
+
+                    <div class="newCred">
+                        <label for="password"><b>New password</b></label>
+                        <input class="input" type="password" id="password" required>
+                        <button class="button" type="submit" onclick="changePass()">Change</button>
+                    </div>
+
+                    <div class="newCred">
+                        <button class="button" type="submit" onclick="deleteAcc()">Delete Account</button>
+                    </div>
+                </div>
+
+                <p id="topOnline">Users:</p>
+                <form id="formUser">
+                    <select id="users" size="4">
+                    </select>
+                </form>   
+                <button class="button" type="submit" onclick="usersCheck()">Check existing users</button>
+
+                
+        
+
+            <div class="container" id="logout">
+            <button class="button" type="submit" onclick="logout()">Logout</button>
+            </div>
+
         </div>
-    </div>
-
-    <img id="myManagerImg" height="100" width="100" style="display: none">
-
-    <div id="powerPlant"> <p>Status of power plant:</p> <p id="status"></p> </div>
-    <div id="productionDiv"> <p>Production:</p> <p id="production"></p> kWh</div>
-    <div id="bufferDiv"> <p>Buffer:</p> <p id="buffer"></p> kWh</div>
-    <div id="totalnetproductionDiv"> <p>Total net production:</p> <p id="totalNetProduction">0</p> kWh</div>
-    <div id="recommendedPriceDiv"> <p>Recommended price:</p> <p id="recommendedPrice">0</p> kr/kWh</div>
-    <div id="currentPriceDiv"> <p>Price:</p> <p id="currentPrice">0</p> kr/kWh</div><br>
-
-    <div class="container">
-        <button type="submit" onclick="startingPlant()">Start Power Plant</button>
-        <button type="submit" onclick="stopPlant()">Stop Power Plant</button>
-    </div>
-
-    <div class="container">
-        <label for="save"><p id="text" >What percentage of your production would you like to save in the buffer?</p></label>
-        <input type="text" placeholder="0" id="save" required>
-    </div>
-
-        <div class="container">
-            <label for="price"><p>Price per kWh</p></label>
-            <input type="text" id="price" required>
-            <button type="submit" onclick="setPrice()">Set price</button>
-        </div>
-
-    <div id="profile">
-        <h2>Update your credentials</h2>
-        <div class="container">
-            <label for="username"><b>New username</b></label>
-            <input type="text" id="username" required>
-            <button type="submit" onclick="changeUser()">Change</button>
-        </div>
-
-        <div class="container">
-            <label for="name"><b>New name</b></label>
-            <input type="text" id="name" required>
-            <button type="submit" onclick="changeName()">Change</button>
-        </div>
-
-        <div class="container">
-            <label for="password"><b>New password</b></label>
-            <input type="password" id="password" required>
-            <button type="submit" onclick="changePass()">Change</button>
-        </div>
-    </div>
-
-    <div class="container" id="submit">
-    <input type="file" id="file" name="file" multiple />
-    <button type="submit" onclick="upload()">Upload</button>
-    </div> 
-
-    <div class="container" id="logout">
-    <button type="submit" onclick="logout()">Logout</button>
-    </div>
-
-    <div class="container">
-    <button type="submit" onclick="deleteAcc()">Delete Account</button>
     </div>
   </body>
 </html>

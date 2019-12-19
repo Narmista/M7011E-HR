@@ -1,6 +1,6 @@
 <!DOCTYPE html>
   <head>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styleLogin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
     </script>
   </head>
@@ -32,15 +32,14 @@
 	    }
 	</script>
 
-	<h1>Login</h1>
+	<h1>Green Lean Electrics</h1>
 
-	<div class="container">
-	    <label for="username"><b>Username</b></label>
-	    <input type="text" id="username" required>
-	    	<label for="password"><b>Password</b></label>
-	    <input type="password" id="password" required>
-	    <button type="submit" onclick="loginValues()">Login</button>
-	    <button type="submit" onclick="signUp()">Register</button>
+	<div id="container">
+		<h2>Login</h2>
+	    <input class="input" type="text" id="username" placeholder="Username" required>
+	    <input class="input" type="password" id="password" placeholder="Password" required>
+	    <button class="button" type="submit" onclick="loginValues()">Login</button>
+	    <button class="button" type="submit" onclick="signUp()">Register</button>
   	</div>
   </body>
 </html>
