@@ -8,6 +8,7 @@
 	<script>
         $(document).ready(function() {
             main(); 
+            buttonCheck();
             setInterval(function(){
                 main();
                 blackOutCheck()
@@ -124,7 +125,28 @@
             });
         }
 
-
+        function buttonCheck(){
+            $.ajax({
+                type: 'get',
+                url: 'http://54.162.94.111:3000/powerPlant/status',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                    if(json.status == 1 || json.status == 2){
+                        document.getElementById("startButton").disabled = true;
+                        document.getElementById("stopButton").disabled = false;
+                    }else if(json.status == 0){
+                        document.getElementById("stopButton").disabled = true;
+                        document.getElementById("startButton").disabled = false;
+                    }
+                }
+            }); 
+        }
         function setStatus(status){
             if(status == 0){
                 status = "stopped";
@@ -280,38 +302,46 @@
             });
         }   
         function startingPlant() {
-            if(document.getElementById("status").innerHTML == )
-            $.ajax({
-                type: 'post',
-                url: 'http://54.162.94.111:3000/powerPlant/starting',
-                headers: {
-                    'Authorization': 'Bearer ' + auth
-                },
-                dataType: 'text',
-                error: function (data) {
-                    console.debug(data);
-                },
-                success: function (json) {
-                }
-            });
-            setTimeout(function(){
-                startPlant(); 
-            }, 30000); //5000 = 5s
+            if(document.getElementById("status").innerHTML == "stopped"){
+                document.getElementById("startButton").disabled = true;
+                document.getElementById("stopButton").disabled = false;
+                $.ajax({
+                    type: 'post',
+                    url: 'http://54.162.94.111:3000/powerPlant/starting',
+                    headers: {
+                        'Authorization': 'Bearer ' + auth
+                    },
+                    dataType: 'text',
+                    error: function (data) {
+                        console.debug(data);
+                    },
+                    success: function (json) {
+                    }
+                });
+            }else{
+                alert("You cant start the powerplant while its either starting or started");
+            }
         }  
         function stopPlant() {
-            $.ajax({
-                type: 'post',
-                url: 'http://54.162.94.111:3000/powerPlant/stop',
-                headers: {
-                    'Authorization': 'Bearer ' + auth
-                },
-                dataType: 'text',
-                error: function (data) {
-                    console.debug(data);
-                },
-                success: function (json) {
-                }
-            });   
+             if(document.getElementById("status").innerHTML == "starting" || document.getElementById("status").innerHTML == "running"){
+                document.getElementById("startButton").disabled = false;
+                document.getElementById("stopButton").disabled = true;
+                $.ajax({
+                    type: 'post',
+                    url: 'http://54.162.94.111:3000/powerPlant/stop',
+                    headers: {
+                        'Authorization': 'Bearer ' + auth
+                    },
+                    dataType: 'text',
+                    error: function (data) {
+                        console.debug(data);
+                    },
+                    success: function (json) {
+                    }
+                }); 
+            }else{
+               alert("You cant stop the powerplant while its already stopped"); 
+            } 
         }   
         function setBuffer(production){
             var x = document.getElementById("save").value;
@@ -549,18 +579,18 @@
             <div id="currentPriceDiv"> <p>Price:</p> <p id="currentPrice">0</p> kr/kWh</div><br>
 
             <div class="container">
-                <button class="button" type="submit" onclick="startingPlant()">Start Power Plant</button>
-                <button class="button" type="submit" onclick="stopPlant()" >Stop Power Plant</button>
+                <button id="startButton" class="button" type="submit" onclick="startingPlant()">Start Power Plant</button>
+                <button id="stopButton" class="button" type="submit" onclick="stopPlant()" >Stop Power Plant</button>
             </div>
 
             <div class="container">
                 <label for="save"><p id="text" >What percentage of your production would you like to save in the buffer?</p></label>
-                 <input class="input" type="number" placeholder="0" id="save" min="0" max="100" required>
+                 <input class="input" type="number" value=0 id="save" min="0" max="100" required onkeydown="return false">
             </div>
 
                 <div class="container">
                     <label for="price"><p id="text">Price per kWh</p></label>
-                     <input class="input" type="number" placeholder="0" id="price" min="0" required>
+                     <input class="input" type="number" value=0 id="price" min="0" required onkeydown="return false">
                     <button class="button" type="submit" onclick="setPrice()">Set price</button>
                 </div>
 

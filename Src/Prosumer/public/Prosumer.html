@@ -5,9 +5,28 @@
     </script>
   </head>
 
-  <body onbeforeunload="return logout()">
+  <body>
 
 	<script>
+
+
+        window.addEventListener("beforeunload", function (e) {
+            $.ajax({
+                type: 'post',
+                url: 'http://54.162.94.111:3000/user/statusZero',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+            e.returnValue = ''; 
+        });
+
 		$(document).ready(function() {
 			main(); 
 			setInterval(function(){
@@ -289,6 +308,21 @@
 		function setPrice(price){
 			document.getElementById("price").innerHTML = price;
 		}
+        function test123(){
+            $.ajax({
+                type: 'post',
+                url: 'http://54.162.94.111:3000/user/statusZero',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                dataType: 'json',
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {
+                }
+            });
+        }
 		function logout(){
 			$.ajax({
                 type: 'post',
@@ -345,11 +379,11 @@
 
         	<div class="container">
                 <label for="save"><p id="text">What percentage of your overproduction would you like to save in the buffer?</p></label>
-                <input class="input" type="number" placeholder="0" id="save" min="0" max="100" required>
+                <input class="input" type="number" value=0 id="save" min="0" max="100" required onkeydown="return false">
         	</div>
         	<div class="container">
                 <label for="buy"><p id="text">What percentage of your underproduction would you like to take from the buffer?</p></label>
-                <input class="input" type="number" placeholder="0" id="buy" min="0" max="100" required>
+                <input class="input" type="number" value=0 id="buy" min="0" max="100" required onkeydown="return false">
         	</div>
         	<div class="container" id="submit">
                 <p id="text">Choose an image of your house with the image button, then upload it by pressing the upload button.</p>

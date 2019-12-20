@@ -22,3 +22,6 @@
 | 2019-12-11  | 5	      | Prepared the project for presentation   |
 | 2019-12-13  | 4	      | Started working on the report   |
 | 2019-12-15  | 6	      | Finished the report and the deployment   |
+| 2019-12-19  | 8	      | Updated GUI   |
+| 2019-12-20  | 8	      | Fixed known bugs and tried to find more   |
+| 2019-12-21  | 4	      | Added some error handling   |

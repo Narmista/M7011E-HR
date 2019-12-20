@@ -3,6 +3,7 @@ const router = express.Router();
 const checkAuth = require('../middleware/check-auth');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+var timeoutObj;
 
 const User = require('../models/user');
 const PowerPlant = require('../models/powerPlant');
@@ -14,36 +15,39 @@ router.get('/status', checkAuth, (req, res, next) => {
   	});
 });
 
-router.post('/start', checkAuth, (req, res, next) => {
-	PowerPlant.find({}).exec().then(powerplant => {
- 		var name = powerplant[0]['name'];
- 		var myquery = { name: name };
-    	var newvalues = { $set: {status: 2} };
-    	PowerPlant.updateOne(myquery, newvalues, function(err, res) {
-    	});
-    	res.json({});
-  	});
-});
-
 router.post('/starting', checkAuth, (req, res, next) => {
 	PowerPlant.find({}).exec().then(powerplant => {
  		var name = powerplant[0]['name'];
  		var myquery = { name: name };
     	var newvalues = { $set: {status: 1} };
-    	PowerPlant.updateOne(myquery, newvalues, function(err, res) {
+      PowerPlant.updateOne(myquery, newvalues, function(err, res) {
     	});
     	res.json({});
+      timeoutObj = setTimeout(() => {
+        PowerPlant.find({}).exec().then(powerplant => {
+          if(powerplant[0]['status'] == 1){
+            var name = powerplant[0]['name'];
+            var myquery = { name: name };
+            var newvalues = { $set: {status: 2} };
+            PowerPlant.updateOne(myquery, newvalues, function(err, res) {
+            });
+          }
+        });
+      }, 30000);
+      console.log("timout obj" + timeoutObj);
   	});
 });
 
 router.post('/stop', checkAuth, (req, res, next) => {
+  console.log("stop" +timeoutObj);
+  clearTimeout(timeoutObj);
 	PowerPlant.find({}).exec().then(powerplant => {
  		var name = powerplant[0]['name'];
  		var myquery = { name: name };
     	var newvalues = { $set: {status: 0} };
     	PowerPlant.updateOne(myquery, newvalues, function(err, res) {
     	});
-    	res.json({status});
+    	res.json({});
   	});
 });
 
