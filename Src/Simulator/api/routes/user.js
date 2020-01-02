@@ -42,7 +42,8 @@ router.post('/signup', (req, res, next) => {
               status: 0,
               netProduction: 0,
               blocked: 0,
-              blackOut: 0
+              blackOut: 0,
+              lastOnline: 0
             });
             user
               .save()
@@ -168,50 +169,141 @@ router.get("/getImage", (req, res, next) => {
 });
 
 router.post("/changeUser", (req, res, next) => {
-  User.find({ name: req.body.name }).exec().then(user => {
-    var myquery = { name: req.body.name };
-    var newvalues = { $set: {username: req.body.newUsername} };
-    User.updateOne(myquery, newvalues, function(err, res) {
-    });
-    res.json({});
-  });
+  var response = 0; 
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
 
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3,
+        "name": req.body.name
+      }]}).exec().then(user => {
+      if(user.length == 0){
+        var myquery = { name: req.body.name };
+        var newvalues = { $set: {username: req.body.newUsername} };
+        User.updateOne(myquery, newvalues, function(err, res) {
+        });
+        response = 1;
+        res.json({response});
+      }else{
+        res.json({response});
+      }
+  });
 });
 
 router.post("/changeName", (req, res, next) => {
-  User.find({ name: req.body.name }).exec().then(user => {
-    var myquery = { name: req.body.name };
-    var newvalues = { $set: {name: req.body.newName} };
-    User.updateOne(myquery, newvalues, function(err, res) {
-    });
-    res.json({});
+  var response = 0; 
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3,
+        "name": req.body.name
+      }]}).exec().then(user => {
+      if(user.length == 0){
+        var myquery = { name: req.body.name };
+        var newvalues = { $set: {name: req.body.newName} };
+        User.updateOne(myquery, newvalues, function(err, res) {
+        });
+        response = 1;
+        res.json({response});
+      }else{
+        res.json({response});
+      }
   });
 });
 
 router.post("/changePass", (req, res, next) => {
- User.find({ name: req.body.name }).exec().then(user => {
-    bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
-      if (err) {
-        return res.status(500).json({
-        error: err
-        });
-      } else {    
-        var myquery = { name: req.body.name };
-        var newvalues = { $set: {password: hash} };
-        User.updateOne(myquery, newvalues, function(err, res) {
-        });
-       res.json({});
-    }
-    });
+  var response = 0; 
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3,
+        "name": req.body.name
+      }]}).exec().then(user => {
+        if(user.length == 0){
+        bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
+          if (err) {
+            return res.status(500).json({
+            error: err
+            });
+          } else {    
+            var myquery = { name: req.body.name };
+            var newvalues = { $set: {password: hash} };
+            User.updateOne(myquery, newvalues, function(err, res) {
+            });
+          response = 1;
+          res.json({response});
+      }
+      });
+        }else{
+        res.json({response});
+      }
   });
 });
 
 router.post("/delete", (req, res, next) => {
-  User.find({ name: req.body.name }).exec().then(user => {
-    var myquery = { name: req.body.name };
-    User.deleteOne(myquery, function(err, res) {
-    });
-    res.json({});
+  var response = 0; 
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2,
+        "name": req.body.name
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3,
+        "name": req.body.name
+      }]}).exec().then(user => {
+      if(user.length == 0){
+        var myquery = { name: req.body.name };
+        User.deleteOne(myquery, function(err, res) {
+        });
+        response = 1;
+        res.json({response});
+      }else{
+        res.json({response});
+      }
   });
 });
 
@@ -230,7 +322,7 @@ router.post("/statusZero", (req, res, next) => {
 });
 
 router.post("/blocked", (req, res, next) => {
-  User.find({ name: req.body.name, status: 1 }).exec().then(user => {
+  User.find({ name: req.body.name}).exec().then(user => {
     var myquery = { name: req.body.name };
     var newvalues = { $set: {blocked: 1} };
     User.updateOne(myquery, newvalues, function(err, res) {
@@ -240,7 +332,7 @@ router.post("/blocked", (req, res, next) => {
 });
 
 router.post("/unBlocked", (req, res, next) => {
-  User.find({ name: req.body.name, status: 1 }).exec().then(user => {
+  User.find({ name: req.body.name}).exec().then(user => {
     var myquery = { name: req.body.name}; 
     var newvalues = { $set: {blocked: 0} };
     User.updateOne(myquery, newvalues, function(err, res) {
@@ -270,7 +362,22 @@ router.get("/tokenZero", (req, res, next) => {
 });
 
 router.post("/onlineCheck", (req, res, next) => {
-  User.find({ status: 1, role: 1}, {_id: 0, name: 1}).exec().then(user => {
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3
+      }]}, {_id: 0, name: 1}).exec().then(user => {
     res.json({user});
   });
 });
@@ -282,7 +389,25 @@ router.post("/usersCheck", (req, res, next) => {
 });
 
 router.post("/blackOutCheck", (req, res, next) => {
-  User.find({ status: 1, role: 1, blackOut: 1}, {_id: 0, name: 1}).exec().then(user => {
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate,
+        "blackOut": 1
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2,
+        "blackOut": 1
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3,
+        "blackOut": 1
+      }]}, {_id: 0, name: 1}).exec().then(user => {
     res.json({user});
   });
 });
@@ -337,9 +462,40 @@ router.post("/setNotBlackOut", (req, res, next) => {
   });
 });
 
-router.get("/getTotalNetProduction", (req, res, next) => {
-  User.find({status : 1, role: 1}, {_id: 0, netProduction: 1}).exec().then(user => {
+router.post("/updateLastOnline", (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_KEY, {ignoreExpiration: true});
+  var name = decoded.username;
 
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  User.find({ username: name }).exec().then(user => {
+    var myquery = { username: name };
+    var newvalues = { $set: {lastOnline: currentDate} };
+    User.updateOne(myquery, newvalues, function(err, res) {
+    });
+    res.json({});
+  });
+});
+
+router.get("/getTotalNetProduction", (req, res, next) => {
+  var today = new Date();
+  var currentDate = today.getHours() +":"+ today.getMinutes() +":"+ today.getSeconds() +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate2 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-1) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+  var currentDate3 = today.getHours() +":"+ today.getMinutes() +":"+ (today.getSeconds()-2) +" "+ today.getDate() +"/"+ (today.getMonth()+1) +"/"+ today.getFullYear();
+
+  
+  User.find({"$or": [{
+        "role": 1,
+        "lastOnline": currentDate
+    }, {
+        "role": 1,
+        "lastOnline": currentDate2
+    }, {
+        "role": 1,
+        "lastOnline": currentDate3
+      }]}, {_id: 0, netProduction: 1}).exec().then(user => {
     res.json({user});
   });
 });

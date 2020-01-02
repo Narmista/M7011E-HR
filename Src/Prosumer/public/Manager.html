@@ -214,13 +214,17 @@
                     'Authorization': 'Bearer ' + auth
                 },
                 data: {newUsername: newUsername, name: name},
-                dataType: 'text',
+                dataType: 'json',
                 error: function (data) {
                     alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('The username has been changed!');
+                     if(json.response == 1){
+                        alert('The username has been changed!');
+                    }else{
+                        alert('The user account that you are trying to alter is still online, please wait until he/she logs out!');
+                    }
                 }
             });
         }
@@ -235,13 +239,17 @@
                     'Authorization': 'Bearer ' + auth
                 },
                 data: {name: name, newName: newName},
-                dataType: 'text',
+                dataType: 'json',
                 error: function (data) {
                     alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('The name has been changed, please update the user list!');
+                    if(json.response == 1){
+                        alert('The name has been changed, please update the user list!');
+                    }else{
+                        alert('The user account that you are trying to alter is still online, please wait until he/she logs out!');
+                    }
                 }
             });
         }
@@ -256,13 +264,17 @@
                     'Authorization': 'Bearer ' + auth
                 },
                 data: {newPassword: newPassword, name: name},
-                dataType: 'text',
+                dataType: 'json',
                 error: function (data) {
                     alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('The password has been changed!');
+                    if(json.response == 1){
+                        alert('The password has been changed!');
+                    }else{
+                        alert('The user account that you are trying to alter is still online, please wait until he/she logs out!');
+                    }
                 }
             });
         }	
@@ -276,13 +288,17 @@
                     'Authorization': 'Bearer ' + auth
                 },
                 data: {name: name},
-                dataType: 'text',
+                dataType: 'json',
                 error: function (data) {
                     alert('Something went wrong, please try again!');
                     console.debug(data);
                 },
                 success: function (json) {
-                    alert('The user account has been deleted, please update the user list!');
+                    if(json.response == 1){
+                        alert('The user account has been deleted, please update the user list!');
+                    }else{
+                        alert('The user account that you are trying to delete is still online, please wait until he/she logs out!');
+                    }
                 }
             });
         }	

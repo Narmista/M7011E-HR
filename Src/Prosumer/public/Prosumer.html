@@ -8,25 +8,6 @@
   <body>
 
 	<script>
-
-
-        window.addEventListener("beforeunload", function (e) {
-            $.ajax({
-                type: 'post',
-                url: 'http://54.162.94.111:3000/user/statusZero',
-                headers: {
-                    'Authorization': 'Bearer ' + auth
-                },
-                dataType: 'json',
-                error: function (data) {
-                    console.debug(data);
-                },
-                success: function (json) {
-                }
-            });
-            e.returnValue = ''; 
-        });
-
 		$(document).ready(function() {
 			main(); 
 			setInterval(function(){
@@ -135,7 +116,20 @@
 		     	   });
                 }
             });
+            $.ajax({
+                type: 'post',
+                url: 'http://54.162.94.111:3000/user/updateLastOnline',
+                headers: {
+                    'Authorization': 'Bearer ' + auth
+                },
+                error: function (data) {
+                    console.debug(data);
+                },
+                success: function (json) {  
+                }
+            });
 		}
+
 		function setConsumption(elecConsumption){
 			document.getElementById("consumption").innerHTML = Math.round(elecConsumption*10);
 		}

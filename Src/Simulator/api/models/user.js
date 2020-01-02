@@ -11,7 +11,8 @@ const userSchema = mongoose.Schema({
 	status: Number,
 	netProduction: Number,
 	blocked: Number,
-	blackOut: Number
+	blackOut: Number,
+	lastOnline: String
 });
 
 module.exports = mongoose.model('User', userSchema);
