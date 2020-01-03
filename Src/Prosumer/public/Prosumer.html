@@ -22,14 +22,14 @@
 		function main(){
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/tokenExpire',
+                url: 'https://52.91.104.26:3000/user/tokenExpire',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                 	$.ajax({
 		                type: 'get',
-		                url: 'http://54.162.94.111:3000/user/tokenZero',
+		                url: 'https://52.91.104.26:3000/user/tokenZero',
 		                headers: {
 		                	'Authorization': 'Bearer ' + auth
 		                },
@@ -38,7 +38,7 @@
 		                },
 		                success: function (json) {
 		             		alert("You have been logged in for too long, please login again!");
-		                	window.location.replace('http://54.162.94.111:7000');
+		                	window.location.replace('https://52.91.104.26:443');
 		                }
 		            });
                 },
@@ -47,7 +47,7 @@
             });
 			$.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/electricityConsumption',
+                url: 'https://52.91.104.26:3000/electricityConsumption',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -60,7 +60,7 @@
             });
 			$.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/getImage',
+                url: 'https://52.91.104.26:3000/user/getImage',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -69,14 +69,14 @@
                 },
                 success: function (json) {
       				if(typeof json.icon != "undefined"){
-                   		$("#myImg").attr('src','http://54.162.94.111:3000/' + json.icon);
+                   		$("#myImg").attr('src','https://52.91.104.26:3000/' + json.icon);
                    		$("#myImg").attr('style','');
                 	}
                 }
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/powerplant/getPrice',
+                url: 'https://52.91.104.26:3000/powerplant/getPrice',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -89,7 +89,7 @@
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/weather/dailyWeather',
+                url: 'https://52.91.104.26:3000/weather/dailyWeather',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -99,7 +99,7 @@
                 success: function (json) {
                   	$.ajax({
 		                type: 'post',
-		                url: 'http://54.162.94.111:3000/weather/currentWeather',
+		                url: 'https://52.91.104.26:3000/weather/currentWeather',
 		                data: {dailyWeather: json.dailyWeather},
 		                dataType: 'json',
 		                headers: {
@@ -118,7 +118,7 @@
             });
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/updateLastOnline',
+                url: 'https://52.91.104.26:3000/user/updateLastOnline',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -142,13 +142,17 @@
 		function setNetProduction(wind){
 			var y = wind*10 - Number(document.getElementById("consumption").innerHTML);
 			document.getElementById("netProduction").innerHTML = Math.round(y);
+            if(y>0){
+                setNotBlackOut();
+                document.getElementById("alert").innerHTML = " ENOUGH <br> POWER";
+            }
             setOwnNetProduction(y);
 			setBuffer(y);
 		}
         function setOwnNetProduction(production){
             $.ajax({
                     type: 'post',
-                    url: 'http://54.162.94.111:3000/user/netProduction',
+                    url: 'https://52.91.104.26:3000/user/netProduction',
                     data: {netProduction: production},
                     dataType: 'json',
                     headers: {
@@ -191,7 +195,7 @@
 		function getBuffer(save, production){
 			$.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/getBuffer',
+                url: 'https://52.91.104.26:3000/user/getBuffer',
                 dataType: 'json',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
@@ -213,7 +217,7 @@
         function buyPower(power) {
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerplant/buyPower',
+                url: 'https://52.91.104.26:3000/powerplant/buyPower',
                 dataType: 'json',
                 data: {power: power},
                 headers: {
@@ -224,10 +228,11 @@
                 },
                 success: function (json) {
                     if(!json.enoughPower){
-                        document.getElementById("netProduction").innerHTML = "POWER OUTAGE!!!";
+                        document.getElementById("alert").innerHTML = "POWER<br> OUTAGE";
                         setBlackOut();
                     }else{
                         setNotBlackOut();
+                        document.getElementById("alert").innerHTML = " ENOUGH <br> POWER";
                     }
 
                 }
@@ -236,7 +241,7 @@
         function setBlackOut(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/setBlackOut',
+                url: 'https://52.91.104.26:3000/user/setBlackOut',
                 dataType: 'json',
                 headers: {
                     'Authorization': 'Bearer ' + auth
@@ -251,7 +256,7 @@
         function setNotBlackOut(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/setNotBlackOut',
+                url: 'https://52.91.104.26:3000/user/setNotBlackOut',
                 dataType: 'json',
                 headers: {
                     'Authorization': 'Bearer ' + auth
@@ -266,7 +271,7 @@
         function sellPower(power) {
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerplant/sellPower',
+                url: 'https://52.91.104.26:3000/powerplant/sellPower',
                 dataType: 'json',
                 data: {power: power},
                 headers: {
@@ -285,7 +290,7 @@
 		function sendBuffer(value){
 			$.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/updateBuffer',
+                url: 'https://52.91.104.26:3000/user/updateBuffer',
                 data: {buffer: value},
 		        dataType: 'json',
                 headers: {
@@ -305,7 +310,7 @@
         function test123(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/statusZero',
+                url: 'https://52.91.104.26:3000/user/statusZero',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -320,7 +325,7 @@
 		function logout(){
 			$.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/statusZero',
+                url: 'https://52.91.104.26:3000/user/statusZero',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -329,7 +334,7 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                	window.location.replace('http://54.162.94.111:7000');
+                	window.location.replace('https://52.91.104.26:443');
                 }
             });
 		}
@@ -339,7 +344,7 @@
             form_data.append('avatar', file_data);
 			$.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/uploadImage',
+                url: 'https://52.91.104.26:3000/user/uploadImage',
                 headers: {
                 	'Authorization': 'Bearer ' + auth
                 },
@@ -361,7 +366,10 @@
 	<h1>Green Lean Electrics</h1>
 
     <div id="container">
-    	<img id="myImg" height="100" width="100" style="display: none">
+        <div id="alertDiv">
+        	<img id="myImg" height="100" width="100" style="display: none">
+            <p id="alert"></p>
+        </div>
         <div id="subcontainer">
             <h2>My Profile</h2>
         	<div id="windDiv"> <p>Current wind:</p> <p id="wind"></p> <p>m/s</p> </div>

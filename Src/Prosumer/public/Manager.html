@@ -24,14 +24,14 @@
         function main(){
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/tokenExpire',
+                url: 'https://52.91.104.26:3000/user/tokenExpire',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
                 error: function (data) {
                     $.ajax({
                         type: 'get',
-                        url: 'http://54.162.94.111:3000/user/tokenZero',
+                        url: 'https://52.91.104.26:3000/user/tokenZero',
                         headers: {
                             'Authorization': 'Bearer ' + auth
                         },
@@ -40,7 +40,7 @@
                         },
                         success: function (json) {
                             alert("You have been logged in for too long, please login again!");
-                            window.location.replace('http://54.162.94.111:7000');
+                            window.location.replace('https://52.91.104.26:443');
                         }
                     });
                 },
@@ -49,7 +49,7 @@
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/getImage',
+                url: 'https://52.91.104.26:3000/user/getImage',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -58,14 +58,14 @@
                 },
                 success: function (json) {
                     if(typeof json.icon != "undefined"){
-                        $("#myManagerImg").attr('src','http://54.162.94.111:3000/' + json.icon);
+                        $("#myManagerImg").attr('src','https://52.91.104.26:3000/' + json.icon);
                         $("#myManagerImg").attr('style','');
                     }
                 }
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/powerPlant/status',
+                url: 'https://52.91.104.26:3000/powerPlant/status',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -79,7 +79,7 @@
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/user/getTotalNetProduction',
+                url: 'https://52.91.104.26:3000/user/getTotalNetProduction',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -99,7 +99,7 @@
             });
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/powerplant/getPrice',
+                url: 'https://52.91.104.26:3000/powerplant/getPrice',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -113,7 +113,7 @@
             });
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerplant/producePower',
+                url: 'https://52.91.104.26:3000/powerplant/producePower',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -128,7 +128,7 @@
         function buttonCheck(){
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/powerPlant/status',
+                url: 'https://52.91.104.26:3000/powerPlant/status',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -163,7 +163,7 @@
         function getProduction(){
             $.ajax({
                 type: 'get',
-                url: 'http://54.162.94.111:3000/powerPlant/production',
+                url: 'https://52.91.104.26:3000/powerPlant/production',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -186,7 +186,7 @@
             form_data.append('avatar', file_data);
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/uploadImage',
+                url: 'https://52.91.104.26:3000/user/uploadImage',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -209,7 +209,7 @@
             var newUsername = document.getElementById("username").value;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/changeUser',
+                url: 'https://52.91.104.26:3000/user/changeUser',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -234,7 +234,7 @@
             var newName = document.getElementById("name").value;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/changeName',
+                url: 'https://52.91.104.26:3000/user/changeName',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -259,7 +259,7 @@
             var newPassword = document.getElementById("password").value;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/changePass',
+                url: 'https://52.91.104.26:3000/user/changePass',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -283,7 +283,7 @@
             var name = e.options[e.selectedIndex].text;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/delete',
+                url: 'https://52.91.104.26:3000/user/delete',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -305,7 +305,7 @@
         function startPlant() {
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerPlant/start',
+                url: 'https://52.91.104.26:3000/powerPlant/start',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -323,7 +323,7 @@
                 document.getElementById("stopButton").disabled = false;
                 $.ajax({
                     type: 'post',
-                    url: 'http://54.162.94.111:3000/powerPlant/starting',
+                    url: 'https://52.91.104.26:3000/powerPlant/starting',
                     headers: {
                         'Authorization': 'Bearer ' + auth
                     },
@@ -344,7 +344,7 @@
                 document.getElementById("stopButton").disabled = true;
                 $.ajax({
                     type: 'post',
-                    url: 'http://54.162.94.111:3000/powerPlant/stop',
+                    url: 'https://52.91.104.26:3000/powerPlant/stop',
                     headers: {
                         'Authorization': 'Bearer ' + auth
                     },
@@ -375,7 +375,7 @@
             var x = document.getElementById("price").value;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerPlant/setPrice',
+                url: 'https://52.91.104.26:3000/powerPlant/setPrice',
                 data: {price: x},
                 dataType: 'json',
                 headers: {
@@ -392,7 +392,7 @@
         function sendBuffer(save){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/powerPlant/updateBuffer',
+                url: 'https://52.91.104.26:3000/powerPlant/updateBuffer',
                 data: {buffer: save},
                 dataType: 'json',
                 headers: {
@@ -411,7 +411,7 @@
             const auth = href.split('?')[1];
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/statusZero',
+                url: 'https://52.91.104.26:3000/user/statusZero',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -420,14 +420,14 @@
                     console.debug(data);
                 },
                 success: function (json) {
-                    window.location.replace('http://54.162.94.111:7000');
+                    window.location.replace('https://52.91.104.26:443');
                 }
             });
         }
         function onlineCheck(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/onlineCheck',
+                url: 'https://52.91.104.26:3000/user/onlineCheck',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -450,7 +450,7 @@
         function usersCheck(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/usersCheck',
+                url: 'https://52.91.104.26:3000/user/usersCheck',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -473,7 +473,7 @@
         function blackOutCheck(){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/blackOutCheck',
+                url: 'https://52.91.104.26:3000/user/blackOutCheck',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -499,7 +499,7 @@
             document.getElementById("prosumerName").innerHTML = name;
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/getUserData',
+                url: 'https://52.91.104.26:3000/user/getUserData',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
@@ -519,7 +519,7 @@
           if(name != ""){
               $.ajax({
                     type: 'post',
-                    url: 'http://54.162.94.111:3000/user/blocked',
+                    url: 'https://52.91.104.26:3000/user/blocked',
                     headers: {
                         'Authorization': 'Bearer ' + auth
                     },
@@ -539,7 +539,7 @@
         function unBlock(name){
             $.ajax({
                 type: 'post',
-                url: 'http://54.162.94.111:3000/user/unBlocked',
+                url: 'https://52.91.104.26:3000/user/unBlocked',
                 headers: {
                     'Authorization': 'Bearer ' + auth
                 },
