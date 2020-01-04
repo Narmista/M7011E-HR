@@ -13,15 +13,29 @@
                 data: {username: uname, password: pwd, name: nme},
                 dataType: 'text',
                 error: function (data) {
+                    alert("That username is already in use, please choose another!");
                     console.debug(data);
                 },
                 success: function (json) {
+                    alert("Congratulations, you are now registered!");
                     window.location.replace('https://52.91.104.26:443');
                 }
             });
 		}
 		function register(){
-			signup(document.getElementById("username").value, document.getElementById("password").value, document.getElementById("name").value);
+            var password = document.getElementById("password").value.length;
+            var username = document.getElementById("username").value.length;
+            var name = document.getElementById("name").value.length;
+            if(name < 1){
+                alert("Please choose a name!");
+            }else if(username < 1){
+                alert("Please choose a username!");
+            }
+            else if(password > 4){
+			 signup(document.getElementById("username").value, document.getElementById("password").value, document.getElementById("name").value);
+            }else{
+                alert("Please choose a password that is longer than 4 characters!");
+            }
 		}
         function cancel(){
             window.location.replace('https://52.91.104.26:443');

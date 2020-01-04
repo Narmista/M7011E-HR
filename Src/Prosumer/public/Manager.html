@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
     </script>
   </head>
-  <body onbeforeunload="return logout()">
+  <body>
 	<script>
         $(document).ready(function() {
             main(); 
@@ -178,7 +178,12 @@
         }
         function setProduction(production){
             document.getElementById("production").innerHTML = production;
-            setBuffer(production);
+            var netProduction = document.getElementById("totalNetProduction").innerHTML;
+            if((parseInt(production) + parseInt(netProduction)) > 0){
+                setBuffer(parseInt(production) + parseInt(netProduction));
+            }else{
+                setBuffer(0);
+            }
         }
         function upload(){
             var file_data = $('#file').prop('files')[0];

@@ -144,7 +144,8 @@
 			document.getElementById("netProduction").innerHTML = Math.round(y);
             if(y>0){
                 setNotBlackOut();
-                document.getElementById("alert").innerHTML = " ENOUGH <br> POWER";
+                document.getElementById("alert").innerHTML = "ENOUGH <br> POWER";
+                document.getElementById("alert").style.color = "green";
             }
             setOwnNetProduction(y);
 			setBuffer(y);
@@ -229,10 +230,12 @@
                 success: function (json) {
                     if(!json.enoughPower){
                         document.getElementById("alert").innerHTML = "POWER<br> OUTAGE";
+                        document.getElementById("alert").style.color = "red";
                         setBlackOut();
                     }else{
                         setNotBlackOut();
                         document.getElementById("alert").innerHTML = " ENOUGH <br> POWER";
+                        document.getElementById("alert").style.color = "green";
                     }
 
                 }

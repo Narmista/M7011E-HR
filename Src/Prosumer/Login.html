@@ -13,6 +13,7 @@
                 data: {username: uname, password: pwd},
                 dataType: 'json',
                 error: function (data) {
+                    alert("Wrong username or password, please try again!");
                     console.debug(data);
                 },
                 success: function (json) {
