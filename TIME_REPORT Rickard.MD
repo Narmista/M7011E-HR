@@ -27,3 +27,6 @@
 | 2019-12-21  | 4	      | Added some error handling   |
 | 2020-01-02  | 6	      | Fixed online check and changing credentials   |
 | 2020-01-03  | 8	      | Tried to fix https and updated gui  |
+| 2020-01-04  | 8	      | Added error messages and fixed errors   |
+
+total: 152

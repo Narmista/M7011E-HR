@@ -33,12 +33,11 @@ h2{
 }
 
 #subcontainer{
-
+	padding-left: 10px;
   	justify-content: center;
   	display: grid;
   	align-items: center;
   	grid-template-rows: 100px 30px 30px 30px 30px 30px 30px 80px 80px 80px 100px;
-  
 }
 
 #myImg{
