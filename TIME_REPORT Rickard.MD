@@ -28,5 +28,6 @@
 | 2020-01-02  | 6	      | Fixed online check and changing credentials   |
 | 2020-01-03  | 8	      | Tried to fix https and updated gui  |
 | 2020-01-04  | 8	      | Added error messages and fixed errors   |
+| 2020-01-04  | 8	      | Solved https connection on google chrome and fixed some errors   |
 
-total: 152
+total: 160
