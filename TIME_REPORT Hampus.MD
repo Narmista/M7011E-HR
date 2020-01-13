@@ -1,12 +1,12 @@
 # TimeReports
 
-| Date  |      Hours    | Activity                                       |
-| ----------- | ------- |------------------------------------------------
-| 2019-11-05  | 5       | Learned the project, wrote code for the Gaussian task                |
-| 2019-11-06  | 4       | Researched about various items such as node                |
-| 2019-11-07  | 5       | Set up a basic server                |
-| 2019-11-11  | 4       | Set up server with aws, fixed github    		|
-| 2019-11-12  | 4       | Improved api   		|
+| Date  |      Hours      | Activity                                       |
+| ----------- | --------- |------------------------------------------------
+| 2019-11-05  | 5         | Learned the project, wrote code for the Gaussian task                |
+| 2019-11-06  | 4         | Researched about various items such as node                |
+| 2019-11-07  | 5         | Set up a basic server                |
+| 2019-11-11  | 4         | Set up server with aws, fixed github    		|
+| 2019-11-12  | 4         | Improved api   		|
 | 2019-11-13  | 6    	  | Set up a basic website for prosumer(tried to call get function to api)  		|
 | 2019-11-19  | 4	      | Set up a basic data base and tried to connect prosumer and api  		|
 | 2019-11-20  | 6	      | Connected prosumer and api  		|
@@ -26,9 +26,7 @@
 | 2019-12-20  | 8	      | Fixed known bugs and tried to find more   |
 | 2019-12-21  | 4	      | Added some error handling   |
 | 2020-01-02  | 6	      | Fixed online check and changing credentials   |
-| 2020-01-03  | 8	      | Tried to fix https and updated gui   |
+| 2020-01-03  | 8	      | Tried to fix https and updated gui  |
 | 2020-01-04  | 8	      | Added error messages and fixed errors   |
 | 2020-01-04  | 8	      | Solved https connection on google chrome and fixed some errors   |
-
-
-total: 160 
+| 2020-01-13  | 8	      | Updated the report and cleaned some in the project |

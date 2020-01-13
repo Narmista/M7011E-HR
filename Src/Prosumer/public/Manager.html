@@ -603,18 +603,15 @@
                 <button id="startButton" class="button" type="submit" onclick="startingPlant()">Start Power Plant</button>
                 <button id="stopButton" class="button" type="submit" onclick="stopPlant()" >Stop Power Plant</button>
             </div>
-
             <div class="container">
                 <label for="save"><p id="text" >What percentage of your production would you like to save in the buffer?</p></label>
                  <input class="input" type="number" value=0 id="save" min="0" max="100" required onkeydown="return false">
             </div>
-
                 <div class="container">
                     <label for="price"><p id="text">Price per kWh</p></label>
                      <input class="input" type="number" value=0 id="price" min="0" required onkeydown="return false">
                     <button class="button" type="submit" onclick="setPrice()">Set price</button>
                 </div>
-
             <div class="container" id="submit">
                 <p id="text">Choose a profile picture with the image button (please choose a png or jpeg file), then upload it by pressing the upload button.</p>
                 <input type="file" id="file" name="file" class="inputfile" accept="image/x-png,image/jpeg"/>
@@ -632,13 +629,11 @@
                         <input class="input" type="text" id="username" required>
                         <button class="button" type="submit" onclick="changeUser()">Change</button>
                     </div>
-
                     <div class="newCred">
                         <label for="name"><b>New name</b></label>
                         <input class="input" type="text" id="name" required>
                         <button class="button" type="submit" onclick="changeName()">Change</button>
                     </div>
-
                     <div class="newCred">
                         <label for="password"><b>New password</b></label>
                         <input class="input" type="password" id="password" required>
@@ -649,16 +644,12 @@
                         <button class="button" type="submit" onclick="deleteAcc()">Delete Account</button>
                     </div>
                 </div>
-
                 <p id="topOnline">Users:</p>
                 <form id="formUser">
                     <select id="users" size="4">
                     </select>
                 </form>   
                 <button class="button" type="submit" onclick="usersCheck()">Check existing users</button>
-
-                
-        
 
             <div class="container" id="logout">
             <button class="button" type="submit" onclick="logout()">Logout</button>
