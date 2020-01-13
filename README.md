@@ -2,7 +2,7 @@
 
 How to connect to the running server (the server running is quite slow):
 
-1.	go to https://52.91.104.26:443 in a webbrowser (Use google chrome because it accepts calls using self signe certificates)
+1.	go to https://52.91.104.26:443 in a webbrowser (Use google chrome because it accepts calls using self signed certificates)
 2.	make a login to access a prosumer
 3. 	login to username admin and password admin to access a manager
 
