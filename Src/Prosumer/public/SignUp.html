@@ -9,7 +9,7 @@
 		function signup(uname, pwd, nme) {
 			$.ajax({
                 type: 'post',
-                url: 'https://52.91.104.26:3000/user/signup',
+                url: 'https://54.82.232.16:3000/user/signup',
                 data: {username: uname, password: pwd, name: nme},
                 dataType: 'text',
                 error: function (data) {
@@ -18,7 +18,7 @@
                 },
                 success: function (json) {
                     alert("Congratulations, you are now registered!");
-                    window.location.replace('https://52.91.104.26:443');
+                    window.location.replace('https://54.82.232.16:443');
                 }
             });
 		}
@@ -38,7 +38,7 @@
             }
 		}
         function cancel(){
-            window.location.replace('https://52.91.104.26:443');
+            window.location.replace('https://54.82.232.16:443');
         }
 	</script>
 	<h1>Grean Lean Electrics</h1>

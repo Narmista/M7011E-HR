@@ -30,3 +30,4 @@
 | 2020-01-04  | 8	      | Added error messages and fixed errors   |
 | 2020-01-04  | 8	      | Solved https connection on google chrome and fixed some errors   |
 | 2020-01-13  | 8	      | Updated the report and cleaned some in the project |
+| 2020-01-15  | 8	      | Set up everything on a new server since our first account ran out of money |
